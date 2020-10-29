@@ -1,56 +1,55 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
+import React, { Component } from 'react';
 
-import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+import { StyleSheet, Text, View, Alert } from 'react-native';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+export default class App extends Component<{}> {
+  
 
-const App: () => React$Node = () => {
-  return (
-    <>
-      <StatusBar barStyle="light-content" />
-        <View style={styles.title}>
-        <Text style={styles.text}>Mobile Coder</Text>
-        </View>
-    </>
-  );
-};
+  SampleFunction=(item)=>{
+	var fs= require('react-native-fs');
+    
+    
+    fs.readFile(item, 'utf8', function(err, data) {
+    if (err) throw err;
+    console.log(data);
+	});
+  }
+  
+
+ render() {
+
+  var SampleNameArray = [ "test1.txt","test2.txt","test3.txt"];
+  
+   return (
+     <View style={styles.MainContainer}>
+
+         { SampleNameArray.map((item, key)=>(
+         <Text key={key} style={styles.TextStyle} onPress={ this.SampleFunction.bind(this, item) }> { item } </Text>)
+         )}
+
+     </View>
+   );
+ }
+}
 
 const styles = StyleSheet.create({
-  title: {
+ 
+ MainContainer: {
     backgroundColor: "#1E2127",
     color: "#ABB2BF",
     height: "100%",
     width: "100%",
     display: "flex",
-    flexDirection: "row",
     justifyContent: "center"
-  },
-  text: {
+   
+ },
+
+ TextStyle:{
     color: "#ABB2BF",
     margin: "auto",
     alignSelf: "center",
     fontSize: 50
-  }
+ }
+
 });
 
-export default App;
