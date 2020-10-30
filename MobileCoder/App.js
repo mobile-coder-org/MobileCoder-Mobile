@@ -1,12 +1,10 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
 import React from 'react';
+//import 'react-native-gesture-handler';
+//import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import ExampleScreen from './screens/example'
+
 import {
   SafeAreaView,
   StyleSheet,
@@ -16,22 +14,18 @@ import {
   StatusBar,
 } from 'react-native';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const Stack = createStackNavigator();
 
-const App: () => React$Node = () => {
+function App(){
   return (
-    <>
-      <StatusBar barStyle="light-content" />
-        <View style={styles.title}>
-        <Text style={styles.text}>Mobile Coder</Text>
-        </View>
-    </>
+    <NavigationContainer>
+      <StatusBar barStyle="light-content"/>
+      <Stack.Navigator 
+      screenOptions={{headerShown: false}} 
+      initialRouteName="Example">
+      <Stack.Screen name="Example" component={ExampleScreen}/>
+      </Stack.Navigator>
+      </NavigationContainer>
   );
 };
 
