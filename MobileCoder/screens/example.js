@@ -5,7 +5,7 @@ export default function Example(props){
     return(
         <SafeAreaView style={styles.container}>
             <View style={styles.heading}>
-            <Text style={styles.textStyle}>This is an example</Text>
+            <Text style={styles.textStyle}>This is an example screen</Text>
             </View>
         </SafeAreaView>
     );
@@ -20,15 +20,16 @@ const styles = StyleSheet.create({
     },
     textStyle: {
         fontWeight: '500',
-        fontSize: 50,
-        color: "#BB86FC",
+        fontSize: 30,
+        color: "#FF0000",
     },
     heading: {
-        width: "100%",
+        width: "90%",
         height: "20%",
         display: 'flex',
         flexDirection: "row",
-        justifyContent: "center"
+        justifyContent: "center",
+        margin: 20
     }
 })
 
