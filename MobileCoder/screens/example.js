@@ -81,8 +81,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 13,
-    fontWeight: 'bold'
-    
+    fontWeight: 'bold',
+    color:'white'
   },
 });
 
