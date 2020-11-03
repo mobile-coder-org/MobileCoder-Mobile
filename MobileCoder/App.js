@@ -30,7 +30,7 @@ function App(){
         inactiveTintColor: 'gray',
       }}
       initialRouteName="Example">
-      <Tab.Screen name="Example" component={ExampleScreen}/>
+      <Tab.Screen name="Files" component={ExampleScreen}/>
       <Tab.Screen name="Admin" component={AdminScreen}/>
       </Tab.Navigator>
       </NavigationContainer>
