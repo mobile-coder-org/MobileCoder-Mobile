@@ -56,7 +56,7 @@ export default function Example(props){
         extraData={selectedId}
         style={styles.container}
       />
-      
+      {/*pass selectedID to data to get just the selected data's files*/}
     <SectionList
       sections={DATA}
       keyExtractor={(item, index) => item + index}
