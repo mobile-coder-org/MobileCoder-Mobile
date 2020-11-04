@@ -72,26 +72,28 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: StatusBar.currentHeight || 0,
-    width:'10%',
-    marginRight:'15%',
+    width:'100%',
+    
     backgroundColor:"#2F333A",
     flex: 1,
     //padding: 8,
-    flexDirection: "column", // main axis
+    //flexDirection: "column", // main axis
     //justifyContent: "space-around", // main axis
   },
  s_container: {
-    flex: 1,
+    flex: 3,
     marginTop: StatusBar.currentHeight || 0,
-    width:'90%',
+    width:'100%',
+    marginRight:'15%',
+    padding:10
   },
   item: {
-    padding: 25,
+    padding: 15,
     marginVertical: 20,
     marginHorizontal:'15%',
 	borderRadius:10,
-    width:'60%',
-    height:'60%',
+    width:'40%',
+    height:'40%',
     flex:1,
     flexDirection:"column",
     alignItems:'center'
@@ -100,9 +102,9 @@ const styles = StyleSheet.create({
   file: {
     padding: 20,
     marginVertical: 20,
-    marginRight:'100%',
+    //marginRight:'100%',
 	borderRadius:10,
-    width:'80%',
+    width:'100%',
     height:'30%',
     flex:1,
     flexDirection:"column",
@@ -111,12 +113,11 @@ const styles = StyleSheet.create({
     
   },
     v_container: {
-    flex: 1,
-    //padding: 8,
-    flexDirection: "row", // main axis
-    //justifyContent: "space-around", // main axis
-    //alignItems: "flex-start", // cross axis
+    width: '100%',
+    height: '100%',
+    display:'flex',
     backgroundColor: '#363941',
+    flexDirection:"row",
   },
   title: {
     fontSize: 13,
