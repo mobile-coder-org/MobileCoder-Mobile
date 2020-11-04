@@ -62,6 +62,7 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = MobileCoder/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B8A5ED7C4205EADC58469D66 /* libPods-MobileCoder-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MobileCoder-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5914E825BF6D78E2407308B /* Pods-MobileCoder-MobileCoderTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MobileCoder-MobileCoderTests.release.xcconfig"; path = "Target Support Files/Pods-MobileCoder-MobileCoderTests/Pods-MobileCoder-MobileCoderTests.release.xcconfig"; sourceTree = "<group>"; };
+		CB7202060A0D448B8535566A /* Overpass.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Overpass.ttf; path = ../assets/fonts/Overpass.ttf; sourceTree = "<group>"; };
 		E54EF5AB38FA04BAE61189E7 /* libPods-MobileCoder-MobileCoderTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MobileCoder-MobileCoderTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC8FAFFFD6467D9B161CFF76 /* Pods-MobileCoder-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MobileCoder-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-MobileCoder-tvOSTests/Pods-MobileCoder-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -165,6 +166,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				F09E55D18595388D777D3131 /* Pods */,
+				9EE73A889E8B403792313804 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -182,6 +184,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		9EE73A889E8B403792313804 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				CB7202060A0D448B8535566A /* Overpass.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		F09E55D18595388D777D3131 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -194,7 +204,6 @@
 				EC8FAFFFD6467D9B161CFF76 /* Pods-MobileCoder-tvOSTests.debug.xcconfig */,
 				EDD441064B0C070CF76729A2 /* Pods-MobileCoder-tvOSTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -375,7 +384,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		0979EB8D7BCBBADF9FB5E2D6 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;

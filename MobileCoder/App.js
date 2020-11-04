@@ -1,56 +1,44 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
+import {createAppContainer, createSwitchNavigator} from 'react-navigation'
+import {createStackNavigator} from 'react-navigation-stack'
+import SplashScreen from './screens/SplashScreen'
+import SignupScreen from './screens/SignupScreen'
+import LoginScreen from './screens/LoginScreen'
+import HomeScreen from './screens/HomeScreen'
 
-import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+import * as firebase from 'firebase'
+import 'firebase/firestore'
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-const App: () => React$Node = () => {
-  return (
-    <>
-      <StatusBar barStyle="light-content" />
-        <View style={styles.title}>
-        <Text style={styles.text}>Mobile Coder</Text>
-        </View>
-    </>
-  );
+var firebaseConfig = {
+  apiKey: "AIzaSyDid2QqX_FubeW8euEBE-iMnWmLJCh5eqk",
+  authDomain: "mobilecoder-cf2ea.firebaseapp.com",
+  databaseURL: "https://mobilecoder-cf2ea.firebaseio.com",
+  projectId: "mobilecoder-cf2ea",
+  storageBucket: "mobilecoder-cf2ea.appspot.com",
+  messagingSenderId: "409368131515",
+  appId: " 1:409368131515:web:ad9bb0eb12dd518cfb769e",
+  measurementId: "G-LSBZPKF91D"
 };
 
-const styles = StyleSheet.create({
-  title: {
-    backgroundColor: "#1E2127",
-    color: "#ABB2BF",
-    height: "100%",
-    width: "100%",
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center"
-  },
-  text: {
-    color: "#ABB2BF",
-    margin: "auto",
-    alignSelf: "center",
-    fontSize: 50
-  }
+firebase.initializeApp(firebaseConfig);
+
+const AppStack = createStackNavigator({
+  Home : HomeScreen
 });
 
-export default App;
+const AuthStack = createStackNavigator({
+  Login: LoginScreen,
+  Signup: SignupScreen
+});
+
+export default createAppContainer(
+  createSwitchNavigator(
+    {
+      Splash: SplashScreen,
+      App: AppStack,
+      Auth: AuthStack
+    },
+    {
+      initialRouteName: 'Splash'
+    }
+  )
+);
