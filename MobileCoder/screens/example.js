@@ -26,15 +26,15 @@ const Project = ({ item, onPress, style }) => (
 );
 
 const Files = ({ title }) => (
-  <View style={styles.item}>
-    <Text style={styles.title}>{title}</Text>
+  <View style={styles.file}>
+    <Text style={styles.titlePurple}>{title}</Text>
   </View>
 );
 
 export default function Example(props){
-  const [selectedId, setSelectedId] = useState('');
 
-	
+  const [selectedId, setSelectedId] = useState('');
+  
   const renderProject = ({ item }) => {
     const backgroundColor = item.title === selectedId ? "#9B51E0" : "#73A2FF";
 
@@ -46,7 +46,6 @@ export default function Example(props){
       />
     );
   };
-
   return (
     <SafeAreaView style={styles.v_container}>
       <FlatList
@@ -57,6 +56,8 @@ export default function Example(props){
         style={styles.container}
       />
       {/*pass selectedID to data to get just the selected data's files*/}
+      
+	
     <SectionList
       sections={DATA}
       keyExtractor={(item, index) => item + index}
@@ -64,7 +65,6 @@ export default function Example(props){
       style={styles.s_container}
     />
     </SafeAreaView>
-    
   );
 }
 
@@ -72,31 +72,49 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: StatusBar.currentHeight || 0,
-    width:'20%',
-    backgroundColor:"#2F333A"
+    width:'10%',
+    marginRight:'15%',
+    backgroundColor:"#2F333A",
+    flex: 1,
+    //padding: 8,
+    flexDirection: "column", // main axis
+    //justifyContent: "space-around", // main axis
   },
  s_container: {
     flex: 1,
     marginTop: StatusBar.currentHeight || 0,
-    width:'75%',
+    width:'90%',
   },
   item: {
-    padding: 20,
+    padding: 25,
     marginVertical: 20,
-    marginHorizontal:'10%',
+    marginHorizontal:'15%',
 	borderRadius:10,
-    width:'70%',
-    height:'90%',
+    width:'60%',
+    height:'60%',
     flex:1,
     flexDirection:"column",
     alignItems:'center'
+    
+  },
+  file: {
+    padding: 20,
+    marginVertical: 20,
+    marginRight:'100%',
+	borderRadius:10,
+    width:'80%',
+    height:'30%',
+    flex:1,
+    flexDirection:"column",
+    alignItems:'center',
+    backgroundColor: '#1F1F1F',
     
   },
     v_container: {
     flex: 1,
     //padding: 8,
     flexDirection: "row", // main axis
-    justifyContent: "space-around", // main axis
+    //justifyContent: "space-around", // main axis
     //alignItems: "flex-start", // cross axis
     backgroundColor: '#363941',
   },
@@ -104,6 +122,11 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: 'bold',
     color:'white'
+  },
+    titlePurple: {
+    fontSize: 13,
+    fontWeight: 'bold',
+    color:"#9B51E0" 
   },
 });
 
