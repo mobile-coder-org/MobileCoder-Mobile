@@ -23,16 +23,15 @@ function App(){
   return (
     <NavigationContainer theme={DarkTheme}>
       <StatusBar barStyle="light-content"/>
-      <Tab.Navigator 
-      screenOptions={{headerShown: false}} 
-      tabBarOptions={{
-        activeTintColor: 'tomato',
-        inactiveTintColor: 'gray',
-      }}
+      <Stack.Navigator 
+      screenOptions={{
+        headerShown: false,
+        animationEnabled: false
+      }} 
       initialRouteName="Example">
-      <Tab.Screen name="Example" component={ExampleScreen}/>
-      <Tab.Screen name="Admin" component={AdminScreen}/>
-      </Tab.Navigator>
+      <Stack.Screen name="Example" component={ExampleScreen}/>
+      <Stack.Screen name="Admin" component={AdminScreen}/>
+      </Stack.Navigator>
       </NavigationContainer>
   );
 };

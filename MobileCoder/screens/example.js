@@ -1,13 +1,21 @@
 import React from 'react';
 import { SafeAreaView, StyleSheet, View, Text } from 'react-native';
+import BottomBar from '../components/BottomBar'
+import { Container, Header, Content, Footer, FooterTab, Button } from 'native-base';
 
 export default function Example(props){
+    let navigation = props.navigation;
     return(
-        <SafeAreaView style={styles.container}>
-            <View style={styles.heading}>
-            <Text style={styles.textStyle}>This is an example screen</Text>
-            </View>
-        </SafeAreaView>
+        <Container style={styles.container}>
+            <Content>
+                <Text style={styles.textStyle}>Example</Text>
+            </Content>
+            <BottomBar 
+            location={"files"}
+            leftClick={()=> navigation.navigate('Example')}
+            rightClick= {() => navigation.navigate('Admin')}
+             />
+        </Container>
     );
 }
 
@@ -21,7 +29,7 @@ const styles = StyleSheet.create({
     textStyle: {
         fontWeight: '500',
         fontSize: 30,
-        color: "#FF0000",
+        color: "#ABB2BF",
     },
     heading: {
         width: "90%",

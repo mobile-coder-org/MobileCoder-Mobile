@@ -1,27 +1,24 @@
 import React from 'react';
 import { TouchableOpacity, SafeAreaView, StyleSheet, View, Text } from 'react-native';
+import BottomBar from '../../components/BottomBar'
+import { Container, Header, Content, Footer, Icon, FooterTab, Button} from 'native-base';
 
 
-export default function Admin(props){
+export default function Admin({navigation}){
     let demoUser = {};
     demoUser.name = "demo";
     demoUser.email = "demo@demo.com";
     return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.heading}>
-                <Text style={styles.textStyle}>
-                    Username: {demoUser.name}
-                </Text>
-            <Text style={styles.textStyle}>
-                Email: {demoUser.email}
-                </Text>
-            </View>
-            <TouchableOpacity style={{alignSelf: 'center', marginTop: 'auto', marginBottom: 100}}>
-            <View style={styles.button}>
-            <Text style={styles.buttonText}>Sign Out</Text>
-            </View>
-            </TouchableOpacity>
-        </SafeAreaView>
+        <Container style={styles.container}>
+            <Content>
+                <Text style={styles.textStyle}>Admin</Text>
+            </Content>
+            <BottomBar 
+            location="admin"
+            leftClick={()=> navigation.navigate('Example')}
+            rightClick= {() => navigation.navigate('Admin')}
+             />
+        </Container>
     )
 }
 
