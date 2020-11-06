@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, SafeAreaView, StyleSheet, View, Text } from 'react-native';
+import { TouchableOpacity, SafeAreaView, StyleSheet, View, Text, Image } from 'react-native';
 import BottomBar from '../../components/BottomBar'
 import { Container, Header, Content, Footer, Icon, FooterTab, Button} from 'native-base';
 
@@ -9,9 +9,21 @@ export default function Admin({navigation}){
     demoUser.name = "demo";
     demoUser.email = "demo@demo.com";
     return (
+        <View style={styles.superContainer}>
+        <View style={{height: 50, backgroundColor: "rgba(0, 0, 0, 0.2)"}}></View>
         <Container style={styles.container}>
             <Content>
-                <Text style={styles.textStyle}>Admin</Text>
+                <View style={styles.profileInfo}>
+                    <Image 
+                    style={styles.profileImage}
+                    source={require('../../assets/images/ProfileImage/ProfileImage.png')}/>
+                    <Text style={styles.username}>Tester</Text>
+                </View>
+                <View style={styles.logout}>
+                    <TouchableOpacity>
+                    <Text style={styles.logoutText}>logout</Text>
+                    </TouchableOpacity>
+                </View>
             </Content>
             <BottomBar 
             location="admin"
@@ -19,18 +31,34 @@ export default function Admin({navigation}){
             rightClick= {() => navigation.navigate('Admin')}
              />
         </Container>
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
+    superContainer: {
+        height: '100%',
+        width: '100%',
+        backgroundColor: "#363941",
+    },
     container: {
         height: '100%',
         width: '100%',
-        backgroundColor: "#1E2127",
+        backgroundColor: "#363941",
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'flex-start'
         //color: "#ABB2BF",
+    },
+    profileInfo: {
+        backgroundColor: "rgba(36, 36, 36, 0.42)",
+        height: 217,
+        width: "100%",
+        padding: 15,
+    },
+    profileImage: {
+        height: 96,
+        width: 96
     },
     button: {
         backgroundColor: "#FF0000",
@@ -52,12 +80,23 @@ const styles = StyleSheet.create({
         //color: "#BB86FC",
     },
     heading: {
-        width: "90%",
-        height: "20%",
-        display: 'flex',
-        flexDirection: "column",
-        justifyContent: "center",
-        margin: 20,
+        backgroundColor: "rgba(0, 0, 0, 0.2)",
+    },
+    username: {
+        marginTop: 10,
+        fontSize: 30,
+        color: "#EDEDED"
+    },
+    logout: {
+        marginTop: 50,
+        height: 60,
+        backgroundColor: "rgba(36, 36, 36, 0.42)",
+        padding: 10 
+    },
+    logoutText: {
+        textAlign: 'center',
+        fontSize: 30,
+        color: "#D85D5D"
     }
 })
 
