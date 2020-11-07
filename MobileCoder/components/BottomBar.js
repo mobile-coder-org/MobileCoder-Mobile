@@ -20,7 +20,6 @@ export default class BottomBar extends Component {
         if(this.state.location == 'files'){
             filesIcon = <Image source={require('../assets/icons/FileIconOn/FileIconOn.png')} />
             filesText = <Text style={{color:"#FDFBFB"}}>Files</Text>;
-            console.log("GOT LOCATION")
         }
         else if(this.props.location == 'admin'){
             adminIcon = <Image source={require('../assets/icons/AdminIconOn/AdminIconOn.png')}/>
@@ -47,6 +46,9 @@ export default class BottomBar extends Component {
 const footerStyles = StyleSheet.create({
     container: {
         backgroundColor: "#202020",
-        borderTopWidth: 0
+        borderTopWidth: 0,
+        marginBottom: 'auto',
+        flex: 0, 
+        flexBasis: 50
     }
 })

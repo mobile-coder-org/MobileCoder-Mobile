@@ -27,7 +27,7 @@ export default function Admin({navigation}){
             </Content>
             <BottomBar 
             location="admin"
-            leftClick={()=> navigation.navigate('Example')}
+            leftClick={()=> navigation.navigate('Files')}
             rightClick= {() => navigation.navigate('Admin')}
              />
         </Container>
@@ -73,19 +73,15 @@ const styles = StyleSheet.create({
         fontSize: 16,
         alignSelf: 'center'
     },
-    textStyle: {
-        fontWeight: '500',
-        color: "#ABB2BF",
-        fontSize: 30,
-        //color: "#BB86FC",
-    },
     heading: {
         backgroundColor: "rgba(0, 0, 0, 0.2)",
     },
     username: {
         marginTop: 10,
         fontSize: 30,
-        color: "#EDEDED"
+        color: "#EDEDED",
+        textAlign: 'center',
+        width: 96
     },
     logout: {
         marginTop: 50,

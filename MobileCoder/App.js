@@ -5,6 +5,7 @@ import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import ExampleScreen from './screens/example'
 import AdminScreen from './screens/admin/admin'
+import FilesScreen from './screens/files/files'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import {
@@ -28,8 +29,8 @@ function App(){
         headerShown: false,
         animationEnabled: false
       }} 
-      initialRouteName="Example">
-      <Stack.Screen name="Example" component={ExampleScreen}/>
+      initialRouteName="Files">
+      <Stack.Screen name="Files" component={FilesScreen}/>
       <Stack.Screen name="Admin" component={AdminScreen}/>
       </Stack.Navigator>
       </NavigationContainer>
