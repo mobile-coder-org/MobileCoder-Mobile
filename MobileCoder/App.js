@@ -29,15 +29,9 @@ function App(){
         animationEnabled: false
       }} 
       initialRouteName="Example">
-<<<<<<< HEAD
       <Stack.Screen name="Example" component={ExampleScreen}/>
       <Stack.Screen name="Admin" component={AdminScreen}/>
       </Stack.Navigator>
-=======
-      <Tab.Screen name="Files" component={ExampleScreen}/>
-      <Tab.Screen name="Admin" component={AdminScreen}/>
-      </Tab.Navigator>
->>>>>>> jzd215DevTesting
       </NavigationContainer>
   );
 };
