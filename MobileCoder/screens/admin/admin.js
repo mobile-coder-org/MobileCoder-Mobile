@@ -8,6 +8,11 @@ export default function Admin({navigation}){
     let demoUser = {};
     demoUser.name = "demo";
     demoUser.email = "demo@demo.com";
+
+    const logoutPressed = () => {
+        //temporary transition for testing
+        navigation.navigate("Login");
+    }
     return (
         <View style={styles.superContainer}>
         <View style={{height: 50, backgroundColor: "rgba(0, 0, 0, 0.2)"}}></View>
@@ -20,7 +25,7 @@ export default function Admin({navigation}){
                     <Text style={styles.username}>Tester</Text>
                 </View>
                 <View style={styles.logout}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={logoutPressed}>
                     <Text style={styles.logoutText}>logout</Text>
                     </TouchableOpacity>
                 </View>

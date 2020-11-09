@@ -1,9 +1,8 @@
 import React from 'react';
 import {useState } from "react";
-import { FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, SectionList, View } from "react-native";
+import { FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, SectionList, View, Image,Icon } from "react-native";
 import BottomBar from '../../components/BottomBar'
-import { Container, Header, Content, Footer, Icon, FooterTab, Button} from 'native-base';
-
+import { Container, Header, Content, Footer, FooterTab, Button} from 'native-base';
 const DATA = [
   {
     title: "Project 1",
@@ -18,6 +17,8 @@ const DATA = [
     data: ["F1_P3.txt", "F2_P3.txt", "F3_P3.txt"]
   }
 ];
+
+
 
 
 
@@ -37,6 +38,7 @@ const File = ({ title }) => (
 
 export default function Files(props){
   let navigation = props.navigation;
+  let plusIcon = <TouchableOpacity><Image source={require('../../assets/icons/PlusButton/PlusButton.png')} style={styles.item}/></TouchableOpacity>
 
   const [selectedId, setSelectedId] = useState('');
   
@@ -64,6 +66,7 @@ export default function Files(props){
             renderItem={renderProject}
             keyExtractor={(item) => item.title}
             extraData={selectedId}
+            ListFooterComponent={plusIcon}
         />
         </View>
       {/*pass selectedID to data to get just the selected data's files*/}
@@ -71,6 +74,7 @@ export default function Files(props){
         <View style={styles.filesHeader}>
             <Text style={styles.filesHeaderText}>Files</Text>
         </View>
+        {/**/}
     <SectionList
       sections={DATA}
       keyExtractor={(item, index) => item + index}

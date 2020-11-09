@@ -16,6 +16,9 @@ export default class LoginScreen extends React.Component {
             .auth()
             .signInWithEmailAndPassword(email, password)
             .catch(error => this.setState({error:error.message}))
+
+            //temporary transition for testing
+            this.props.navigation.navigate("Files");
     }
 
     render() {
@@ -43,7 +46,7 @@ export default class LoginScreen extends React.Component {
                             <Text style={styles.title}>Password</Text>
                             <TextInput 
                                 style={styles.input} 
-                                secureTextEntry="true" 
+                                secureTextEntry= {true}
                                 autoCapitalize="none"
                                 onChangeText={password => this.setState({password})}
                                 value={this.state.password}
