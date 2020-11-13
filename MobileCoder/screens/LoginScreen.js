@@ -1,6 +1,9 @@
 import React from 'react'
 import {View, StyleSheet, Text, TextInput, TouchableOpacity} from 'react-native'
-import * as firebase from 'firebase'
+//import * as firebase from 'firebase'
+import firebase from '../environment/config'
+import { User } from '../models/models'
+import UserService from '../services/UserService'
 
 export default class LoginScreen extends React.Component {
     state = {
@@ -13,12 +16,13 @@ export default class LoginScreen extends React.Component {
         const {email, password} = this.state
 
         firebase
-            .auth()
-            .signInWithEmailAndPassword(email, password)
-            .catch(error => this.setState({error:error.message}))
-
-            //temporary transition for testing
-            this.props.navigation.navigate("Files");
+        .auth()
+        .signInWithEmailAndPassword(email, password).then(()=> {
+            UserService.getUser(firebase.auth().currentUser.uid, (user) =>{
+                this.props.navigation.navigate("Admin", {user: user});
+            })
+        })
+        .catch(error => this.setState({error:error.message}))
     }
 
     render() {

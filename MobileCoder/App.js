@@ -9,8 +9,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import AdminScreen from './screens/admin/admin'
 import FilesScreen from './screens/files/files'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import * as firebase from 'firebase'
-import 'firebase/firestore'
+//import * as firebase from 'firebase'
+//import 'firebase/firestore'
 
 import {
   SafeAreaView,

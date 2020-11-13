@@ -1,13 +1,12 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { TouchableOpacity, SafeAreaView, StyleSheet, View, Text, Image } from 'react-native';
 import BottomBar from '../../components/BottomBar'
 import { Container, Header, Content, Footer, Icon, FooterTab, Button} from 'native-base';
 
 
-export default function Admin({navigation}){
-    let demoUser = {};
-    demoUser.name = "demo";
-    demoUser.email = "demo@demo.com";
+export default function Admin({route, navigation}){
+    
+    const [user, setUser] = useState(route.params.user);
 
     const logoutPressed = () => {
         //temporary transition for testing
@@ -22,7 +21,8 @@ export default function Admin({navigation}){
                     <Image 
                     style={styles.profileImage}
                     source={require('../../assets/images/ProfileImage/ProfileImage.png')}/>
-                    <Text style={styles.username}>Tester</Text>
+                    <Text style={styles.username}>{user.name}</Text>
+                    <Text style={styles.username}>{user.email}</Text>
                 </View>
                 <View style={styles.logout}>
                     <TouchableOpacity onPress={logoutPressed}>
@@ -83,10 +83,10 @@ const styles = StyleSheet.create({
     },
     username: {
         marginTop: 10,
-        fontSize: 30,
+        fontSize: 25,
         color: "#EDEDED",
-        textAlign: 'center',
-        width: 96
+        textAlign: 'left',
+        width: '90%' 
     },
     logout: {
         marginTop: 50,

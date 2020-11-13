@@ -1,6 +1,9 @@
 import React from 'react'
-import {View, StyleSheet, Text, TextInput, TouchableOpacity} from 'react-native'
-import * as firebase from 'firebase'
+import {View, StyleSheet, Text, TextInput, TouchableOpacity, Alert} from 'react-native'
+//import * as firebase from 'firebase'
+import firebase from '../environment/config'
+import UserService from '../services/UserService'
+import { User } from '../models/models'
 
 export default class SignupScreen extends React.Component {
     state = {
@@ -11,15 +14,29 @@ export default class SignupScreen extends React.Component {
     }
 
     handleSignup = () => {
+        let uid = ""
         firebase
-            .auth()
-            .createUserWithEmailAndPassword(this.state.email, this.state.password)
-            .then(userCredentials => {
-                return userCredentials.user.updateProfile({
-                    displayName: this.state.name
-                });
+        .auth()
+        .createUserWithEmailAndPassword(this.state.email, this.state.password)
+        .then(userCredentials => {
+            uid = userCredentials.user.uid;
+            return userCredentials.user.updateProfile({
+                displayName: this.state.name
+            });
+        })
+        .then(() =>{
+            UserService.createUser(uid, this.state.name, this.state.email, () =>{
+                Alert.alert(
+                    "User Created",
+                    "welcome to MobileCoder",
+                    [{
+                        text: "Ok",
+                        onPress: () => {this.props.navigation.navigate("Files");}
+                    }]
+                )
             })
-            .catch(error => this.setState({error:error.message}));
+        })
+        .catch(error => this.setState({error:error.message}));
     }
 
     render() {
@@ -56,7 +73,7 @@ export default class SignupScreen extends React.Component {
                             <Text style={styles.title}>Password</Text>
                             <TextInput 
                                 style={styles.input} 
-                                secureTextEntry="true" 
+                                secureTextEntry={true}
                                 autoCapitalize="none"
                                 onChangeText={password => this.setState({password})}
                                 value={this.state.password}

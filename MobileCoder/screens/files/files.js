@@ -3,6 +3,7 @@ import {useState } from "react";
 import { FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, SectionList, View, Image,Icon } from "react-native";
 import BottomBar from '../../components/BottomBar'
 import { Container, Header, Content, Footer, FooterTab, Button} from 'native-base';
+
 const DATA = [
   {
     title: "Project 1",
@@ -18,17 +19,13 @@ const DATA = [
   }
 ];
 
-
-
-
-
-const Workspace = ({ item, onPress, style }) => (
+const WorkspaceComponent = ({ item, onPress, style }) => (
   <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
     <Text style={styles.title} adjustsFontSizeToFit={true}>{item.title}</Text>
   </TouchableOpacity>
 );
 
-const File = ({ title }) => (
+const FileComponent = ({ title }) => (
   <TouchableOpacity>
   <View style={styles.file}>
     <Text style={styles.titlePurple}>{title}</Text>
@@ -36,20 +33,22 @@ const File = ({ title }) => (
   </TouchableOpacity>
 );
 
-export default function Files(props){
+export default function FilesScreen(props){
   let navigation = props.navigation;
   let plusIcon = <TouchableOpacity><Image source={require('../../assets/icons/PlusButton/PlusButton.png')} style={styles.item}/></TouchableOpacity>
 
-  const [selectedId, setSelectedId] = useState('');
+  const [selectedId, setSelectedId] = useState(0);
   
-  const renderProject = ({ item }) => {
-    const backgroundColor = item.title === selectedId ? "#9B51E0" : "#73A2FF";
+  const renderProject = ({ item, index}) => {
+    //const backgroundColor = index === selectedId ? "#9B51E0" : "#73A2FF";
+    let selectedStyle = index === selectedId ? 
+    {backgroundColor:"#73A2FF", borderWidth: 4, borderColor: "rgb(240, 240,240)"} : {backgroundColor:"#73A2FF"};
 
     return (
-      <Workspace
+      <WorkspaceComponent
         item={item}
-        onPress={() => setSelectedId(item.title)}
-        style={{ backgroundColor }}
+        onPress={() => setSelectedId(index)}
+        style={selectedStyle}
       />
     );
   };
@@ -75,10 +74,10 @@ export default function Files(props){
             <Text style={styles.filesHeaderText}>Files</Text>
         </View>
         {/**/}
-    <SectionList
-      sections={DATA}
-      keyExtractor={(item, index) => item + index}
-      renderItem={({ item }) => <File title={item}/>}
+    <FlatList
+      data={DATA.length > 0 ? DATA[selectedId].data : []}
+      keyExtractor={(item, index) => `file-${index}`}
+      renderItem={({ item }) => <FileComponent title={item}/>}
     />
     </View>
     </View>
