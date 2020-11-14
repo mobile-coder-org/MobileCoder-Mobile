@@ -17,10 +17,10 @@ export class Workspace {
 }
 
 export class File {
-    constructor(fid, name, extention, contents, desktop_abs_path){
+    constructor(fid, name, extension, contents, desktop_abs_path){
         this.fid = fid;
         this.name = name;
-        this.extention = extention;
+        this.extension = extension;
         this.contents = contents;
         this.desktop_abs_path = desktop_abs_path;
     }

@@ -109,9 +109,6 @@ const CreateWorkspaceModal = ({visible, setModalVisible, createWorkspace}) => {
   </Modal>
 )};
 
-
-
-
 export default function FilesScreen(props){
   let navigation = props.navigation;
   let user = props.route.params.user;
@@ -185,9 +182,9 @@ export default function FilesScreen(props){
         </View>
         {/**/}
     <FlatList
-      data={workspaces.length > 0 ? workspaces[selectedId].data : []}
+      data={workspaces.length > 0 ? workspaces[selectedId].files: []}
       keyExtractor={(item, index) => `file-${index}`}
-      renderItem={({ item }) => <FileComponent name={item}/>}
+      renderItem={({ item }) => <FileComponent name={item.name + item.extension}/>}
     />
     </View>
     </View>
