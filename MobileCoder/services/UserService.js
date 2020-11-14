@@ -21,22 +21,25 @@ export default class UserService {
             name: name,
             email: email
         })
-        .then(() => callback(uid, name, email))
+        .then(() => {
+            let user = new User(uid, name, email);
+            callback(user);
+        })
     }
 
     static getUser(uid, callback){
         db.collection("users").doc(uid).get().then((doc) =>{
             if(doc.exists){
                 let data = doc.data();
-                console.log(doc.data());
-                let user = new User(uid, data.name, data.email);
-                callback(user);
+                UserService.getUserWorkspaces(uid, (workspaces) =>{
+                    let user = new User(uid, data.name, data.email, workspaces);
+                    callback(user);
+                } );
             }
             else {
                 console.log("user does not exist")
             }
         })
-
     }
 
     static createUserWorkspace(uid, workspaceName, creation_date, callback){
@@ -45,17 +48,21 @@ export default class UserService {
             creation_date: creation_date,
         })
         .then(docRef => {
-            callback(docRef.id, workspaceName, creation_date);
+            let workspace = new Workspace(docRef.id, workspaceName, creation_date);
+            callback(workspace);
         })
         .catch((err) => {alert("could not create workspace")});
     }
 
-    //TODO: complete getting data
     static getUserWorkspaces(uid, callback){
         db.collection("users").doc(uid).collection("workspaces").get().then((querySnapshot) =>{
+                let workspaces = [];
                querySnapshot.forEach(function(doc){
-                    console.log(docconsole.log(doc.id, "=>", doc.data()))
+                    let data = doc.data();
+                    let workspace = new Workspace(doc.id, data.name, data.creation_date);
+                    workspaces.push(workspace);
                }) 
+                callback(workspaces)
         });
     }
 

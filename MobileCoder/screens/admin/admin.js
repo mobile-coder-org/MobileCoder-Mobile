@@ -32,8 +32,8 @@ export default function Admin({route, navigation}){
             </Content>
             <BottomBar 
             location="admin"
-            leftClick={()=> navigation.navigate('Files')}
-            rightClick= {() => navigation.navigate('Admin')}
+            leftClick={()=> navigation.navigate('Files', {user: user})}
+            rightClick= {() => navigation.navigate('Admin', {user: user})}
              />
         </Container>
         </View>

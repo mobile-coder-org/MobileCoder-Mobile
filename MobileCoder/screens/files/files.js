@@ -1,10 +1,16 @@
 import React from 'react';
 import {useState } from "react";
-import { FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, SectionList, View, Image,Icon } from "react-native";
+import { Modal, FlatList, 
+  SafeAreaView, StatusBar, StyleSheet, 
+  Text, TouchableOpacity, SectionList, 
+  View, Image,Icon, KeyboardAvoidingView } from "react-native";
 import BottomBar from '../../components/BottomBar'
 import { Container, Header, Content, Footer, FooterTab, Button} from 'native-base';
+import UserService from '../../services/UserService'
+import { TextInput } from 'react-native-gesture-handler';
 
-const DATA = [
+/*
+const workspaces = [
   {
     title: "Project 1",
     data: ["F1_P1.txt", "F2_P1.txt", "F3_P1.txt"]
@@ -18,28 +24,127 @@ const DATA = [
     data: ["F1_P3.txt", "F2_P3.txt", "F3_P3.txt"]
   }
 ];
+*/
 
 const WorkspaceComponent = ({ item, onPress, style }) => (
   <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
-    <Text style={styles.title} adjustsFontSizeToFit={true}>{item.title}</Text>
+    <Text style={styles.title} adjustsFontSizeToFit={true}>{item.name}</Text>
   </TouchableOpacity>
 );
 
-const FileComponent = ({ title }) => (
+const FileComponent = ({ name}) => (
   <TouchableOpacity>
   <View style={styles.file}>
-    <Text style={styles.titlePurple}>{title}</Text>
+    <Text style={styles.titlePurple}>{name}</Text>
   </View>
   </TouchableOpacity>
 );
 
+const CreateWorkspaceModal = ({visible, setModalVisible, createWorkspace}) => {
+  const [workspaceName, setWorkspaceName] = useState("");
+  //const [modalVisible, setModalVisible] = useState(visible);
+  
+  return (
+  <Modal
+    animationType="slide"
+    visible={visible}
+    transparent={true}
+    onRequestClose={() => {
+      Alert.alert("Modal has been closed.");
+    }}
+     >
+  <KeyboardAvoidingView
+    behavior="position"
+    style={styles.modalView}
+  >
+    <View style={{alignItems: 'center', height: '100%', width: '100%', backgroundColor:"#363941" }}>
+
+    <View style={styles.modalHeader}>
+    <Text style={styles.modalHeaderText}>Create Workspace</Text>
+    <TouchableOpacity style={styles.modalHeaderExit}
+      onPress={() => setModalVisible(false)}
+    >
+      <Text style={styles.modalHeaderText}>X</Text>
+    </TouchableOpacity>
+    </View>
+
+    <View style={styles.modalBody}>
+      <TextInput
+        placeholder="Enter Workspace Name"
+        placeholderTextColor="#7A767E"
+        keyboardAppearance="dark"
+        value={workspaceName}
+        onChangeText = {(text) => setWorkspaceName(text)}
+        style={{ borderRadius: 8,
+                margin: 15,
+                backgroundColor: "rgba(31, 31, 31, 0.35)", 
+                height: 60,
+                width: 300, 
+                padding: 10,
+                color: "#F0F0F0",
+                fontSize: 15
+          }}
+      />
+      <TouchableOpacity onPress={() => {
+        if(workspaceName !== ""){
+          createWorkspace(workspaceName);
+          setModalVisible(false);
+        }
+        else{
+          alert("Your workspace needs a name")
+        }
+        }}>
+        <View style={{
+          borderRadius: 10,
+          alignItems: 'center', 
+          justifyContent: 'center',
+          height: 50, width: 100, 
+          backgroundColor: "#9B51E0", margin: 15}}>
+        <Text style={{textAlign: 'center', color: "#F0F0F0", fontSize: 15, fontWeight: '500'}}>create</Text>
+        </View>
+        </TouchableOpacity>
+      </View>
+    </View>
+  </KeyboardAvoidingView>
+  </Modal>
+)};
+
+
+
+
 export default function FilesScreen(props){
   let navigation = props.navigation;
-  let plusIcon = <TouchableOpacity><Image source={require('../../assets/icons/PlusButton/PlusButton.png')} style={styles.item}/></TouchableOpacity>
+  let user = props.route.params.user;
+  let plusIcon = <TouchableOpacity onPress={addWorkspacePressed}>
+    <Image source={require('../../assets/icons/PlusButton/PlusButton.png')} style={styles.item}/>
+    </TouchableOpacity>
 
   const [selectedId, setSelectedId] = useState(0);
+  const [workspaces, setWorkspaces] = useState(user.workspaces);
+  const [modalVisible, setModalVisible] = useState(false);
+
+  function addWorkspacePressed(){
+    setModalVisible(true);
+    /*
+    UserService.createUserWorkspace(user.uid, "demo_workspace", String(Date.now()), (workspace) => {
+      console.log("Success adding workspace");
+      let copyWorkspaces = workspaces.slice();
+      copyWorkspaces.push(workspace)
+      setWorkspaces(copyWorkspaces);
+    })
+    */
+  }
+  function createWorkspace(name){
+      UserService.createUserWorkspace(user.uid, name, String(Date.now()), (workspace) => {
+        console.log("Success adding workspace");
+        let copyWorkspaces = workspaces.slice();
+        copyWorkspaces.push(workspace)
+        setWorkspaces(copyWorkspaces);
+      })
+  }
+
   
-  const renderProject = ({ item, index}) => {
+  const renderWorkspace = ({ item, index}) => {
     //const backgroundColor = index === selectedId ? "#9B51E0" : "#73A2FF";
     let selectedStyle = index === selectedId ? 
     {backgroundColor:"#73A2FF", borderWidth: 4, borderColor: "rgb(240, 240,240)"} : {backgroundColor:"#73A2FF"};
@@ -54,16 +159,21 @@ export default function FilesScreen(props){
   };
 
   return (
-        <View style={styles.superContainer}>
+        <View style={[styles.superContainer, {opacity: modalVisible ? 0.5: 1}]}>
+        {
+        <CreateWorkspaceModal visible={modalVisible} setModalVisible={setModalVisible} 
+            createWorkspace={createWorkspace}
+        />
+        }
         <View style={{height: 50, backgroundColor: "rgba(0, 0, 0, 0.2)"}}></View>
         <Container style={{overflow: 'hidden'}}>
         <View style={{height:'100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start'}}>
         <View style={[styles.container, {flex: 1, display: 'flex', flexDirection: 'row'}]}>
         <View style={styles.workspaceList}>
         <FlatList
-            data={DATA}
-            renderItem={renderProject}
-            keyExtractor={(item) => item.title}
+            data={workspaces}
+            renderItem={renderWorkspace}
+            keyExtractor={(item, index) => item.name + index}
             extraData={selectedId}
             ListFooterComponent={plusIcon}
         />
@@ -75,16 +185,16 @@ export default function FilesScreen(props){
         </View>
         {/**/}
     <FlatList
-      data={DATA.length > 0 ? DATA[selectedId].data : []}
+      data={workspaces.length > 0 ? workspaces[selectedId].data : []}
       keyExtractor={(item, index) => `file-${index}`}
-      renderItem={({ item }) => <FileComponent title={item}/>}
+      renderItem={({ item }) => <FileComponent name={item}/>}
     />
     </View>
     </View>
     <BottomBar 
     location="files"
-    leftClick={()=> navigation.navigate('Files')}
-    rightClick= {() => navigation.navigate('Admin')}
+    leftClick={()=> navigation.navigate('Files', {user: user})}
+    rightClick= {() => navigation.navigate('Admin', {user: user})}
         />
         </View>
     </Container>
@@ -130,7 +240,7 @@ const styles = StyleSheet.create({
     color: 'rgb(240, 240, 240)',
   },
   item: {
-    padding: 15,
+    padding: 5,
     marginVertical: 10,
     marginHorizontal:'15%',
 	borderRadius:10,
@@ -154,14 +264,60 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(31, 31, 31, 0.35)',
   },
   title: {
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: 'bold',
-    color:'white'
+    color:'white',
+    width: '90%',
   },
     titlePurple: {
     fontSize: 13,
     fontWeight: 'bold',
     color:"#9B51E0" 
+  },
+  modalHeader: {
+    backgroundColor: "#202020",
+    width: "100%",
+    height: "20%",
+    justifyContent: 'flex-start',
+    alignItems: "center",
+    paddingHorizontal: 10,
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  modalHeaderText: {
+    fontSize: 20,
+    color: "#F0F0F0",
+  },
+  modalHeaderExit: {
+    fontSize: 20,
+    color: "#F0F0F0",
+    marginLeft: "auto"
+  },
+  modalBody: {
+    width: "100%",
+    height: "50%",
+    alignItems: 'center',
+    //justifyContent: 'center',
+    margin: 10,
+  },
+  modalView: {
+    position: 'absolute',
+    width: '100%',
+    height: '30%',
+    bottom: 0,
+    //margin: 20,
+    backgroundColor: "#363941",
+    borderRadius: 20,
+    //padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5
   },
 });
 

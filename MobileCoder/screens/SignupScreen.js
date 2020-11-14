@@ -25,13 +25,13 @@ export default class SignupScreen extends React.Component {
             });
         })
         .then(() =>{
-            UserService.createUser(uid, this.state.name, this.state.email, () =>{
+            UserService.createUser(uid, this.state.name, this.state.email, (user) =>{
                 Alert.alert(
                     "User Created",
                     "welcome to MobileCoder",
                     [{
                         text: "Ok",
-                        onPress: () => {this.props.navigation.navigate("Files");}
+                        onPress: () => {this.props.navigation.navigate("Files", {user: user});}
                     }]
                 )
             })
