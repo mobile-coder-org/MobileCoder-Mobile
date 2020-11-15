@@ -250,7 +250,7 @@ const styles = StyleSheet.create({
   },
   file: {
     padding: 20,
-    marginVertical: 20,
+    marginVertical: 10,
     //marginRight:'100%',
 	borderRadius:10,
     width:'100%',
