@@ -8,23 +8,8 @@ import BottomBar from '../../components/BottomBar'
 import { Container, Header, Content, Footer, FooterTab, Button} from 'native-base';
 import UserService from '../../services/UserService'
 import { TextInput } from 'react-native-gesture-handler';
-
-/*
-const workspaces = [
-  {
-    title: "Project 1",
-    data: ["F1_P1.txt", "F2_P1.txt", "F3_P1.txt"]
-  },
-  {
-    title: "Project 2",
-    data: ["F1_P2.txt", "F2_P2.txt", "F3_P2.txt"]
-  },
-  {
-    title: "Project 3",
-    data: ["F1_P3.txt", "F2_P3.txt", "F3_P3.txt"]
-  }
-];
-*/
+import CreateWorkspaceModal from '../../components/CreateWorkspaceModal'
+import CreateFileModal from '../../components/CreateFileModal'
 
 const WorkspaceComponent = ({ item, onPress, style }) => (
   <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
@@ -40,97 +25,31 @@ const FileComponent = ({ name}) => (
   </TouchableOpacity>
 );
 
-const CreateWorkspaceModal = ({visible, setModalVisible, createWorkspace}) => {
-  const [workspaceName, setWorkspaceName] = useState("");
-  //const [modalVisible, setModalVisible] = useState(visible);
-  
-  return (
-  <Modal
-    animationType="slide"
-    visible={visible}
-    transparent={true}
-    onRequestClose={() => {
-      Alert.alert("Modal has been closed.");
-    }}
-     >
-  <KeyboardAvoidingView
-    behavior="position"
-    style={styles.modalView}
-  >
-    <View style={{alignItems: 'center', height: '100%', width: '100%', backgroundColor:"#363941" }}>
-
-    <View style={styles.modalHeader}>
-    <Text style={styles.modalHeaderText}>Create Workspace</Text>
-    <TouchableOpacity style={styles.modalHeaderExit}
-      onPress={() => setModalVisible(false)}
-    >
-      <Text style={styles.modalHeaderText}>X</Text>
-    </TouchableOpacity>
-    </View>
-
-    <View style={styles.modalBody}>
-      <TextInput
-        placeholder="Enter Workspace Name"
-        placeholderTextColor="#7A767E"
-        keyboardAppearance="dark"
-        value={workspaceName}
-        onChangeText = {(text) => setWorkspaceName(text)}
-        style={{ borderRadius: 8,
-                margin: 15,
-                backgroundColor: "rgba(31, 31, 31, 0.35)", 
-                height: 60,
-                width: 300, 
-                padding: 10,
-                color: "#F0F0F0",
-                fontSize: 15
-          }}
-      />
-      <TouchableOpacity onPress={() => {
-        if(workspaceName !== ""){
-          createWorkspace(workspaceName);
-          setModalVisible(false);
-        }
-        else{
-          alert("Your workspace needs a name")
-        }
-        }}>
-        <View style={{
-          borderRadius: 10,
-          alignItems: 'center', 
-          justifyContent: 'center',
-          height: 50, width: 100, 
-          backgroundColor: "#9B51E0", margin: 15}}>
-        <Text style={{textAlign: 'center', color: "#F0F0F0", fontSize: 15, fontWeight: '500'}}>create</Text>
-        </View>
-        </TouchableOpacity>
-      </View>
-    </View>
-  </KeyboardAvoidingView>
-  </Modal>
-)};
-
 export default function FilesScreen(props){
   let navigation = props.navigation;
   let user = props.route.params.user;
-  let plusIcon = <TouchableOpacity onPress={addWorkspacePressed}>
+  let workspacePlusIcon = <TouchableOpacity onPress={addWorkspacePressed}>
     <Image source={require('../../assets/icons/PlusButton/PlusButton.png')} style={styles.item}/>
+    </TouchableOpacity>
+
+  let filePlusIcon = <TouchableOpacity styel={{alignSelf: "flex-end"}} onPress={addFilePressed}>
+    <Image source={require('../../assets/icons/PlusButton/PlusButton.png')} 
+    style={[styles.item, {height: 40, width: 40}]} resizeMode="contain"/>
     </TouchableOpacity>
 
   const [selectedId, setSelectedId] = useState(0);
   const [workspaces, setWorkspaces] = useState(user.workspaces);
-  const [modalVisible, setModalVisible] = useState(false);
+  const [workspaceModalVisible, setWorkspaceModalVisible] = useState(false);
+  const [fileModalVisible, setFileModalVisible] = useState(false);
 
   function addWorkspacePressed(){
-    setModalVisible(true);
-    /*
-    UserService.createUserWorkspace(user.uid, "demo_workspace", String(Date.now()), (workspace) => {
-      console.log("Success adding workspace");
-      let copyWorkspaces = workspaces.slice();
-      copyWorkspaces.push(workspace)
-      setWorkspaces(copyWorkspaces);
-    })
-    */
+    setWorkspaceModalVisible(true);
   }
+
+  function addFilePressed(){
+    setFileModalVisible(true);
+  }
+
   function createWorkspace(name){
       UserService.createUserWorkspace(user.uid, name, String(Date.now()), (workspace) => {
         console.log("Success adding workspace");
@@ -140,7 +59,18 @@ export default function FilesScreen(props){
       })
   }
 
+  function createWorkspace(name){
+      UserService.createUserWorkspace(user.uid, name, String(Date.now()), (workspace) => {
+        console.log("Success adding workspace");
+        let copyWorkspaces = workspaces.slice();
+        copyWorkspaces.push(workspace)
+        setWorkspaces(copyWorkspaces);
+      })
+  }
   
+  function createFile(name, extension){
+  }
+ 
   const renderWorkspace = ({ item, index}) => {
     //const backgroundColor = index === selectedId ? "#9B51E0" : "#73A2FF";
     let selectedStyle = index === selectedId ? 
@@ -156,10 +86,15 @@ export default function FilesScreen(props){
   };
 
   return (
-        <View style={[styles.superContainer, {opacity: modalVisible ? 0.5: 1}]}>
+        <View style={[styles.superContainer, {opacity: workspaceModalVisible ? 0.5: 1}]}>
         {
-        <CreateWorkspaceModal visible={modalVisible} setModalVisible={setModalVisible} 
+        <CreateWorkspaceModal visible={workspaceModalVisible} setModalVisible={setWorkspaceModalVisible} 
             createWorkspace={createWorkspace}
+        />
+        }
+        {
+        <CreateFileModal visible={fileModalVisible} setModalVisible={setFileModalVisible} 
+            createWorkspace={createFile}
         />
         }
         <View style={{height: 50, backgroundColor: "rgba(0, 0, 0, 0.2)"}}></View>
@@ -172,13 +107,14 @@ export default function FilesScreen(props){
             renderItem={renderWorkspace}
             keyExtractor={(item, index) => item.name + index}
             extraData={selectedId}
-            ListFooterComponent={plusIcon}
+            ListFooterComponent={workspacePlusIcon}
         />
         </View>
       {/*pass selectedID to data to get just the selected data's files*/}
       <View style={styles.fileList}>
         <View style={styles.filesHeader}>
             <Text style={styles.filesHeaderText}>Files</Text>
+            {filePlusIcon}
         </View>
         {/**/}
     <FlatList
