@@ -25,6 +25,9 @@ export default class UserService {
             let user = new User(uid, name, email);
             callback(user);
         })
+        .catch(() => {
+            console.log("error creating user");
+        })
     }
 
     static getUser(uid, callback){
@@ -85,11 +88,26 @@ export default class UserService {
             desktop_abs_path: desktop_abs_path
         })
         .then(docRef => {
-            let data = docRef.data();
-            let file = new File(docRef.id, data.name, data.extension, data.contents, data.desktop_abs_path);
+            console.log("Getting data")
+            //let data = docRef.data();
+            console.log(docRef.id, fileName, extension, contents, desktop_abs_path);
+            let file = new File(docRef.id, fileName, extension, contents, desktop_abs_path);
             callback(file);
         })
         .catch((err) => console.log("error creating file"));
+    }
+
+    static updateUserWorkspaceFile(uid, wid, fid, contents, callback){
+        db.collection("users").doc(uid).collection("workspaces").doc(wid).collection("files").doc(fid).update({
+            contents: contents,
+        })
+        .then(docRef => {
+            callback(true);
+        })
+        .catch((err) => {
+            console.log("error creating file");
+            callback(false);
+        });
     }
 
     static getUserWorkspaceFiles(uid, wid, callback){

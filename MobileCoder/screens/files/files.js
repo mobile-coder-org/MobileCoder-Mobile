@@ -17,13 +17,6 @@ const WorkspaceComponent = ({ item, onPress, style }) => (
   </TouchableOpacity>
 );
 
-const FileComponent = ({ name}) => (
-  <TouchableOpacity>
-  <View style={styles.file}>
-    <Text style={styles.titlePurple}>{name}</Text>
-  </View>
-  </TouchableOpacity>
-);
 
 export default function FilesScreen(props){
   let navigation = props.navigation;
@@ -32,12 +25,12 @@ export default function FilesScreen(props){
     <Image source={require('../../assets/icons/PlusButton/PlusButton.png')} style={styles.item}/>
     </TouchableOpacity>
 
-  let filePlusIcon = <TouchableOpacity styel={{alignSelf: "flex-end"}} onPress={addFilePressed}>
+  let filePlusIcon = <TouchableOpacity style={{marginHorizontal: 10, display: "flex", height: 40, width: 40}} onPress={addFilePressed}>
     <Image source={require('../../assets/icons/PlusButton/PlusButton.png')} 
-    style={[styles.item, {height: 40, width: 40}]} resizeMode="contain"/>
+    style={{height: "100%", width: "100%", flex: 1}} resizeMode="contain"/>
     </TouchableOpacity>
 
-  const [selectedId, setSelectedId] = useState(0);
+  const [selectedInd, setSelectedInd] = useState(0);
   const [workspaces, setWorkspaces] = useState(user.workspaces);
   const [workspaceModalVisible, setWorkspaceModalVisible] = useState(false);
   const [fileModalVisible, setFileModalVisible] = useState(false);
@@ -59,34 +52,49 @@ export default function FilesScreen(props){
       })
   }
 
-  function createWorkspace(name){
-      UserService.createUserWorkspace(user.uid, name, String(Date.now()), (workspace) => {
-        console.log("Success adding workspace");
-        let copyWorkspaces = workspaces.slice();
-        copyWorkspaces.push(workspace)
-        setWorkspaces(copyWorkspaces);
-      })
-  }
-  
   function createFile(name, extension){
+    UserService.createUserWorkspaceFile(user.uid, workspaces[selectedInd].wid, name, extension, "", "", (file) => {
+      let copyWorkspaces = workspaces.slice();
+      let copyFiles =  copyWorkspaces[selectedInd].files.slice()
+      copyFiles.push(file);
+      copyWorkspaces[selectedInd].files = copyFiles
+      setWorkspaces(copyWorkspaces)
+    })
+  }
+
+  const FileComponent = ({ name, index}) => (
+    <TouchableOpacity onPress={() => {updateFile("console.log('Hello World')", index)}}>
+    <View style={styles.file}>
+      <Text style={styles.titlePurple}>{name}</Text>
+    </View>
+    </TouchableOpacity>
+  );
+
+  function updateFile(contents, fileInd) {
+    let fid = workspaces[selectedInd].files[fileInd].fid
+    UserService.updateUserWorkspaceFile(user.uid, workspaces[selectedInd].wid, fid, contents, (updated) => {
+      if (updated) {
+        console.log("file updated");
+      }
+    })
   }
  
   const renderWorkspace = ({ item, index}) => {
     //const backgroundColor = index === selectedId ? "#9B51E0" : "#73A2FF";
-    let selectedStyle = index === selectedId ? 
+    let selectedStyle = index === selectedInd ? 
     {backgroundColor:"#73A2FF", borderWidth: 4, borderColor: "rgb(240, 240,240)"} : {backgroundColor:"#73A2FF"};
 
     return (
       <WorkspaceComponent
         item={item}
-        onPress={() => setSelectedId(index)}
+        onPress={() => setSelectedInd(index)}
         style={selectedStyle}
       />
     );
   };
 
   return (
-        <View style={[styles.superContainer, {opacity: workspaceModalVisible ? 0.5: 1}]}>
+        <View style={[styles.superContainer, {opacity: workspaceModalVisible || fileModalVisible ? 0.5: 1}]}>
         {
         <CreateWorkspaceModal visible={workspaceModalVisible} setModalVisible={setWorkspaceModalVisible} 
             createWorkspace={createWorkspace}
@@ -94,7 +102,7 @@ export default function FilesScreen(props){
         }
         {
         <CreateFileModal visible={fileModalVisible} setModalVisible={setFileModalVisible} 
-            createWorkspace={createFile}
+            createFile={createFile}
         />
         }
         <View style={{height: 50, backgroundColor: "rgba(0, 0, 0, 0.2)"}}></View>
@@ -106,7 +114,7 @@ export default function FilesScreen(props){
             data={workspaces}
             renderItem={renderWorkspace}
             keyExtractor={(item, index) => item.name + index}
-            extraData={selectedId}
+            extraData={selectedInd}
             ListFooterComponent={workspacePlusIcon}
         />
         </View>
@@ -118,9 +126,9 @@ export default function FilesScreen(props){
         </View>
         {/**/}
     <FlatList
-      data={workspaces.length > 0 ? workspaces[selectedId].files: []}
+      data={workspaces.length > 0 ? workspaces[selectedInd].files: []}
       keyExtractor={(item, index) => `file-${index}`}
-      renderItem={({ item }) => <FileComponent name={item.name + item.extension}/>}
+      renderItem={({ item, index}) => <FileComponent name={item.name + item.extension} index={index}/>}
     />
     </View>
     </View>
@@ -166,7 +174,8 @@ const styles = StyleSheet.create({
     padding: 10,
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'flex-end'
+    alignItems: 'flex-end',
+    justifyContent: "flex-start"
   },
   filesHeaderText: {
     fontSize: 30,
