@@ -63,7 +63,10 @@ export default function FilesScreen(props){
   }
 
   const FileComponent = ({ name, index}) => (
-    <TouchableOpacity onPress={() => {updateFile("console.log('Hello World')", index)}}>
+    <TouchableOpacity onPress={() => {
+      //updateFile("console.log('Hello World')", index)
+      navigation.navigate('TempTextEditing', {user: user, file: workspaces[selectedInd].files[index]})
+      }}>
     <View style={styles.file}>
       <Text style={styles.titlePurple}>{name}</Text>
     </View>
