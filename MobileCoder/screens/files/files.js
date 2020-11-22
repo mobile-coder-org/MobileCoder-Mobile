@@ -21,7 +21,7 @@ export default function FilesScreen(props){
     <Image source={require('../../assets/icons/PlusButton/PlusButton.png')} style={styles.item}/>
     </TouchableOpacity>
 
-  let filePlusIcon = <TouchableOpacity style={{marginHorizontal: 10, display: "flex", height: 40, width: 40}} onPress={addFilePressed}>
+  let filePlusIcon = <TouchableOpacity style={{marginHorizontal: 10, display: "flex", height: 40, width: 40, marginLeft:"auto"}} onPress={addFilePressed}>
     <Image source={require('../../assets/icons/PlusButton/PlusButton.png')} 
     style={{height: "100%", width: "100%", flex: 1}} resizeMode="contain"/>
     </TouchableOpacity>
