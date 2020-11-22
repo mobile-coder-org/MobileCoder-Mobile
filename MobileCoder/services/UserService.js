@@ -123,4 +123,13 @@ export default class UserService {
         })
         .catch((err) => {console.log("error getting files");});
     }
+
+    static deleteUserWorkspaceFile(uid, wid, fid, callback){
+        db.collection("users").doc(uid).collection("workspaces").doc(wid).collection("files").doc(fid).delete().then(() =>{
+            callback(true);
+        })
+        .catch(() => {
+            callback(false);
+        })
+    }
 }

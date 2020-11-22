@@ -10,12 +10,22 @@ import UserService from '../../services/UserService'
 import { TextInput } from 'react-native-gesture-handler';
 import CreateWorkspaceModal from '../../components/CreateWorkspaceModal'
 import CreateFileModal from '../../components/CreateFileModal'
+import Swipeout from 'react-native-swipeout';
 
-const WorkspaceComponent = ({ item, onPress, style }) => (
+const WorkspaceComponent = ({ item, onPress, style }) =>{ 
+  let workspaceSwipeoutButtons = [
+    {
+      text: "x",
+      backgroundColor: "#FF0000"
+    }
+  ]
+  return (
+   <Swipeout style={{backgroundColor:"rgba(0,0,0, 0.0)"}} right={workspaceSwipeoutButtons}>
   <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
     <Text style={styles.title} adjustsFontSizeToFit={true}>{item.name}</Text>
   </TouchableOpacity>
-);
+  </Swipeout>
+)};
 
 
 export default function FilesScreen(props){
@@ -62,7 +72,34 @@ export default function FilesScreen(props){
     })
   }
 
-  const FileComponent = ({ name, index}) => (
+
+  const FileComponent = ({ name, index}) => {
+    let removeCurrentFile = () => {
+          let copyFiles = workspaces[selectedInd].files.slice();
+          let copyWorkspaces = workspaces.slice();
+          copyFiles.splice(index, 1);
+          copyWorkspaces[selectedInd].files = copyFiles;
+          setWorkspaces(copyWorkspaces);
+        }
+
+    var fileSwipeoutBtns = [
+      {
+        text: "x",
+        backgroundColor: "#FF0000",
+        onPress: () => {
+          UserService.deleteUserWorkspaceFile(user.uid, workspaces[selectedInd].wid, workspaces[selectedInd].files[index].fid, (didDelete) =>{
+            if(didDelete){
+              removeCurrentFile()
+            }
+            else {
+              alert("error deleting file");
+            }
+          })
+        }
+      }
+    ] 
+    return (
+    <Swipeout style={{backgroundColor: "rgba(0,0,0,0.0)"}}right={fileSwipeoutBtns}>
     <TouchableOpacity onPress={() => {
       //updateFile("console.log('Hello World')", index)
       navigation.navigate('TempTextEditing', {user: user, file: workspaces[selectedInd].files[index]})
@@ -71,7 +108,8 @@ export default function FilesScreen(props){
       <Text style={styles.titlePurple}>{name}</Text>
     </View>
     </TouchableOpacity>
-  );
+    </Swipeout>
+  )};
 
   function updateFile(contents, fileInd) {
     let fid = workspaces[selectedInd].files[fileInd].fid
