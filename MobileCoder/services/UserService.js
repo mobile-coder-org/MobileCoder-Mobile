@@ -80,6 +80,24 @@ export default class UserService {
         .catch((err) => console.log("error getting workspaces"));
     }
 
+    static deleteUserWorkspace(uid, wid, callback){
+        UserService.getUserWorkspaceFiles(uid, wid, (files) =>{
+            let total = files.length;
+            let count = 0;
+            for(let file of files){
+                UserService.deleteUserWorkspaceFile(uid, wid, file.fid, (didDelete) => {
+                    count += 1
+                    if(count === total){
+                        db.collection("users").doc(uid).collection("workspaces").doc(wid).delete().then(() => {
+                            callback(true)
+                        })
+                        .catch(() => callback(false))
+                    }
+                })
+            }
+        })
+    }
+
     static createUserWorkspaceFile(uid, wid, fileName, extension, contents, desktop_abs_path, callback){
         db.collection("users").doc(uid).collection("workspaces").doc(wid).collection("files").add({
             name: fileName,

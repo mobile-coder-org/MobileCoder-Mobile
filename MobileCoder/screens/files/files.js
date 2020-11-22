@@ -12,20 +12,6 @@ import CreateWorkspaceModal from '../../components/CreateWorkspaceModal'
 import CreateFileModal from '../../components/CreateFileModal'
 import Swipeout from 'react-native-swipeout';
 
-const WorkspaceComponent = ({ item, onPress, style }) =>{ 
-  let workspaceSwipeoutButtons = [
-    {
-      text: "x",
-      backgroundColor: "#FF0000"
-    }
-  ]
-  return (
-   <Swipeout style={{backgroundColor:"rgba(0,0,0, 0.0)"}} right={workspaceSwipeoutButtons}>
-  <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
-    <Text style={styles.title} adjustsFontSizeToFit={true}>{item.name}</Text>
-  </TouchableOpacity>
-  </Swipeout>
-)};
 
 
 export default function FilesScreen(props){
@@ -61,6 +47,38 @@ export default function FilesScreen(props){
         setWorkspaces(copyWorkspaces);
       })
   }
+  const WorkspaceComponent = ({ item, index, onPress, style }) =>{ 
+    let removeCurrentWorkspace = () => {
+          if(selectedInd === index){
+            setSelectedInd(0)
+          }
+          let copyWorkspaces = workspaces.slice();
+          copyWorkspaces.splice(index, 1);
+          setWorkspaces(copyWorkspaces);
+    }
+    let workspaceSwipeoutButtons = [
+      {
+        text: "x",
+        backgroundColor: "#FF0000",
+        onPress: () => { 
+          UserService.deleteUserWorkspace(user.uid, workspaces[index].wid, (didDelete) =>{
+            if(didDelete){
+              removeCurrentWorkspace();
+            }
+            else {
+              alert("An error occured while deleting your workspace");
+            }
+          })
+        } 
+      }
+    ]
+    return (
+    <Swipeout style={{backgroundColor:"rgba(0,0,0, 0.0)"}} right={workspaceSwipeoutButtons}>
+    <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
+      <Text style={styles.title} adjustsFontSizeToFit={true}>{item.name}</Text>
+    </TouchableOpacity>
+    </Swipeout>
+)};
 
   function createFile(name, extension){
     UserService.createUserWorkspaceFile(user.uid, workspaces[selectedInd].wid, name, extension, "", "", (file) => {
@@ -113,8 +131,8 @@ export default function FilesScreen(props){
 
   function updateFile(contents, fileInd) {
     let fid = workspaces[selectedInd].files[fileInd].fid
-    UserService.updateUserWorkspaceFile(user.uid, workspaces[selectedInd].wid, fid, contents, (updated) => {
-      if (updated) {
+    UserService.updateUserWorkspaceFile(user.uid, workspaces[selectedInd].wid, fid, contents, (didUpdate) => {
+      if (didUpdate) {
         console.log("file updated");
       }
     })
@@ -128,6 +146,7 @@ export default function FilesScreen(props){
     return (
       <WorkspaceComponent
         item={item}
+        index={index}
         onPress={() => setSelectedInd(index)}
         style={selectedStyle}
       />
