@@ -3,7 +3,7 @@ import {useState } from "react";
 import { Modal, FlatList, 
   SafeAreaView, StatusBar, StyleSheet, 
   Text, TouchableOpacity, SectionList, 
-  View, Image,Icon, KeyboardAvoidingView } from "react-native";
+  View, Image,Icon, KeyboardAvoidingView, Alert } from "react-native";
 import BottomBar from '../../components/BottomBar'
 import { Container, Header, Content, Footer, FooterTab, Button} from 'native-base';
 import UserService from '../../services/UserService'
@@ -61,14 +61,26 @@ export default function FilesScreen(props){
         text: "x",
         backgroundColor: "#FF0000",
         onPress: () => { 
-          UserService.deleteUserWorkspace(user.uid, workspaces[index].wid, (didDelete) =>{
-            if(didDelete){
-              removeCurrentWorkspace();
+          console.log("delete tapped")
+          Alert.alert("Do you want to delete this workspace?", "deleting your workspace will delete all its files",
+           [{
+            text: "Cancel",
+           },
+           {
+            text: "Delete",
+            style: "destructive",
+            onPress: () => {
+                UserService.deleteUserWorkspace(user.uid, workspaces[index].wid, (didDelete) =>{
+                  if(didDelete){
+                    removeCurrentWorkspace();
+                  }
+                  else {
+                    alert("An error occured while deleting your workspace");
+                  }
+                })
             }
-            else {
-              alert("An error occured while deleting your workspace");
-            }
-          })
+           }
+          ])
         } 
       }
     ]
@@ -105,14 +117,25 @@ export default function FilesScreen(props){
         text: "x",
         backgroundColor: "#FF0000",
         onPress: () => {
-          UserService.deleteUserWorkspaceFile(user.uid, workspaces[selectedInd].wid, workspaces[selectedInd].files[index].fid, (didDelete) =>{
-            if(didDelete){
-              removeCurrentFile()
+           Alert.alert("Do you want to delete this file?", "Deleting a file will remove it from your workspace", [
+             {
+            text: "Cancel" 
+            },
+            {
+              text: "Delete",
+              style: "destructive",
+              onPress: () => {
+                UserService.deleteUserWorkspaceFile(user.uid, workspaces[selectedInd].wid, workspaces[selectedInd].files[index].fid, (didDelete) =>{
+                  if(didDelete){
+                    removeCurrentFile()
+                  }
+                  else {
+                    alert("error deleting file");
+                  }
+                })
+              }
             }
-            else {
-              alert("error deleting file");
-            }
-          })
+         ])
         }
       }
     ] 

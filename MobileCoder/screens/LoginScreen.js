@@ -40,6 +40,7 @@ export default class LoginScreen extends React.Component {
                         <TextInput 
                             style={styles.input} 
                             autoCapitalize="none" 
+                            keyboardAppearance="dark"
                             onChangeText={email => this.setState({email})}
                             value={this.state.email}
                         ></TextInput>
@@ -50,6 +51,7 @@ export default class LoginScreen extends React.Component {
                             <Text style={styles.title}>Password</Text>
                             <TextInput 
                                 style={styles.input} 
+                                keyboardAppearance="dark"
                                 secureTextEntry= {true}
                                 autoCapitalize="none"
                                 onChangeText={password => this.setState({password})}

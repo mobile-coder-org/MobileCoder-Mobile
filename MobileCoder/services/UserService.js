@@ -84,6 +84,13 @@ export default class UserService {
         UserService.getUserWorkspaceFiles(uid, wid, (files) =>{
             let total = files.length;
             let count = 0;
+            if(total == 0){
+                db.collection("users").doc(uid).collection("workspaces").doc(wid).delete().then(() => {
+                    callback(true)
+                })
+                .catch(() => callback(false))
+                return;
+            }
             for(let file of files){
                 UserService.deleteUserWorkspaceFile(uid, wid, file.fid, (didDelete) => {
                     count += 1

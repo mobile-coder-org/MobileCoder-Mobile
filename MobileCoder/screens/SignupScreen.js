@@ -52,6 +52,7 @@ export default class SignupScreen extends React.Component {
                     <View>
                         <Text style={styles.title}>Name</Text>
                         <TextInput 
+                            keyboardAppearance="dark"
                             style={styles.input} 
                             autoCapitalize="none" 
                             onChangeText={name => this.setState({name})}
@@ -61,6 +62,7 @@ export default class SignupScreen extends React.Component {
                     <View style={{marginTop: 32}}>
                         <Text style={styles.title}>Email Address</Text>
                         <TextInput 
+                            keyboardAppearance="dark"
                             style={styles.input} 
                             autoCapitalize="none" 
                             onChangeText={email => this.setState({email})}
@@ -72,6 +74,7 @@ export default class SignupScreen extends React.Component {
                         <View>
                             <Text style={styles.title}>Password</Text>
                             <TextInput 
+                                keyboardAppearance="dark"
                                 style={styles.input} 
                                 secureTextEntry={true}
                                 autoCapitalize="none"
