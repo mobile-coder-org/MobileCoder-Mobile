@@ -1,5 +1,5 @@
 import { WebView } from 'react-native-webview';
-import React, {useState} from 'react';
+import React, {Component, useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -10,10 +10,11 @@ import {
   StatusBar,
 } from 'react-native';
 
-
 export default function TempTextEditingScreen(props){
     let {file} = props.route.params
     let goBack = () => props.navigation.goBack();
+    const editor = require("./textEditor.html");
+
     return(
         <View style={styles.container}>
             <View style={{height: 50, backgroundColor: "rgba(0, 0, 0, 0.2)"}}></View>
@@ -22,9 +23,16 @@ export default function TempTextEditingScreen(props){
                     <TouchableOpacity onPress={goBack}>
                         <Text style={{color: "#7041ff", fontSize: 20}}>{"< Back"}</Text>
                     </TouchableOpacity>
-                <Text style={{color: "#f0f0f0", fontSize: 30,
-                 marginLeft: "auto", marginRight: "auto"}}>{file.name + file.extension}</Text>
+                    <Text style={{color: "#f0f0f0", fontSize: 30,
+                    marginLeft: "auto", marginRight: "auto"}}>{file.name + file.extension}
+                    </Text>
                 </View>
+                <WebView 
+                    source={editor}
+                    scalesPageToFit={false}
+                    javaScriptEnabled={true}
+                    style={{flex:1}}
+                />
             </SafeAreaView>
         </View>
     )
