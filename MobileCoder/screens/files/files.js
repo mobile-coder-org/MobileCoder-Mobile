@@ -31,14 +31,6 @@ export default function FilesScreen(props){
   const [workspaceModalVisible, setWorkspaceModalVisible] = useState(false);
   const [fileModalVisible, setFileModalVisible] = useState(false);
 
-  UserService.getUser(user.uid, (data) => {
-    for(let workspace of data.workspaces){
-      for(let file of workspace.files){
-        console.log(file.name, file.contents);
-      }
-    }
-  }, false);
-  
   function addWorkspacePressed(){
     setWorkspaceModalVisible(true);
   }
