@@ -135,13 +135,14 @@ export default class UserService {
         });
     }
 
-    static getUserWorkspaceFiles(uid, wid, callback){
+    static getUserWorkspaceFiles(uid, wid, callback, nocontents){
         db.collection("users").doc(uid).collection("workspaces").doc(wid).collection("files").get()
         .then((querySnapshot) => {
             let files = [];
             querySnapshot.forEach(function(doc){
                 let data = doc.data();
-                let file = new File(doc.id, data.name, data.extension, data.contents, data.desktop_abs_path);
+                let contents = nocontents ? "" : data.contents;
+                let file = new File(doc.id, data.name, data.extension, contents, data.desktop_abs_path);
                 files.push(file);
             })
             callback(files);
@@ -157,4 +158,25 @@ export default class UserService {
             callback(false);
         })
     }
+
+    static overwriteFile(uid, wid, file, callback){
+        UserService.deleteUserWorkspaceFile(uid, wid, file.fid, (didDelete) => {
+            console.log(didDelete)
+            if(didDelete){
+                UserService.createUserWorkspaceFile(uid, wid, file.name, file.extension, "", "",  (file) => {
+                    if(file){
+                        callback(file);
+                    }
+                    else {                            
+                        //alert
+                        callback(undefined)
+                    }
+                })  
+            }
+            else{
+                callback(undefined)
+            }
+        })
+    }
+
 }

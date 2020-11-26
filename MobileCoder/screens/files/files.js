@@ -40,12 +40,27 @@ export default function FilesScreen(props){
   }
 
   function createWorkspace(name){
-      UserService.createUserWorkspace(user.uid, name, String(Date.now()), (workspace) => {
-        console.log("Success adding workspace");
-        let copyWorkspaces = workspaces.slice();
-        copyWorkspaces.push(workspace)
-        setWorkspaces(copyWorkspaces);
-      })
+    UserService.getUserWorkspaces(user.uid, (workspaces) => {
+      let duplicateFound = false;
+      for(let workspace of workspaces){
+        if(workspace.name.trim() === name.trim()){
+          duplicateFound = true;
+          console.log(workspace.name.trim());
+        }
+      }
+
+      if(duplicateFound){
+        alert("A workspace with this name already exists.");
+      }
+      else{
+        UserService.createUserWorkspace(user.uid, name.trim(), String(Date.now()), (workspace) => {
+          console.log("Success adding workspace");
+          let copyWorkspaces = workspaces.slice();
+          copyWorkspaces.push(workspace)
+          setWorkspaces(copyWorkspaces);
+        })
+      }
+    })
   }
   const WorkspaceComponent = ({ item, index, onPress, style }) =>{ 
     let removeCurrentWorkspace = () => {
@@ -93,12 +108,60 @@ export default function FilesScreen(props){
 )};
 
   function createFile(name, extension){
-    UserService.createUserWorkspaceFile(user.uid, workspaces[selectedInd].wid, name, extension, "", "", (file) => {
+    let createFileHelper = () => {
+      UserService.createUserWorkspaceFile(user.uid, workspaces[selectedInd].wid, name.trim(), extension.trim(), "", "", (file) => {
       let copyWorkspaces = workspaces.slice();
       let copyFiles =  copyWorkspaces[selectedInd].files.slice()
       copyFiles.push(file);
       copyWorkspaces[selectedInd].files = copyFiles
       setWorkspaces(copyWorkspaces)
+    })
+   }
+
+   UserService.getUserWorkspaceFiles(user.uid, workspaces[selectedInd].wid, (files) => {
+      let duplicateFound = false;
+      let dupInd = -1;
+      let duplicate;
+      //refresh files
+      let copyWorkspaces = workspaces.slice();
+      let copyFiles = files;
+      copyWorkspaces[selectedInd].files = copyFiles
+      setWorkspaces(copyWorkspaces)
+
+      //check for duplicates
+      for(let i = 0; i < workspaces[selectedInd].files.length; i++){
+        let file = workspaces[selectedInd].files[i];
+        if(file.name.toLowerCase().trim() == name.toLowerCase().trim() && file.extension.toLowerCase().trim() == extension.toLowerCase().trim()){
+          duplicateFound = true;
+          duplicate = file;
+          dupInd = i;
+        }
+      }
+      if(duplicateFound){
+        Alert.alert("A duplicate file was found", "Would you like to overwrite the existing file?", [
+          {
+            text: "Cancel",
+          },
+          {
+            text: "Overwrite",
+            style: "destructive",
+            onPress: () => {
+              UserService.overwriteFile(user.uid, workspaces[selectedInd].wid, duplicate, (file) => {
+                //refresh files
+                console.log("refreshing")
+                console.log(file)
+                let copyWorkspaces = workspaces.slice();
+                copyWorkspaces[selectedInd].files.splice(dupInd, 1);
+                copyWorkspaces[selectedInd].files.push(file);
+                setWorkspaces(copyWorkspaces)
+              })
+            }
+          }
+        ])
+      }
+      else {
+        createFileHelper();
+      }
     })
   }
 

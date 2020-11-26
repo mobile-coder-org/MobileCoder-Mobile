@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import { TouchableOpacity, SafeAreaView, StyleSheet, View, Text, Image } from 'react-native';
 import BottomBar from '../../components/BottomBar'
 import { Container, Header, Content, Footer, Icon, FooterTab, Button} from 'native-base';
+import firebase from '../../environment/config'
 
 
 export default function Admin({route, navigation}){
@@ -10,7 +11,11 @@ export default function Admin({route, navigation}){
 
     const logoutPressed = () => {
         //temporary transition for testing
-        navigation.navigate("Login");
+        firebase.auth().signOut().then(() => {
+            console.log("logout success");
+            navigation.navigate("Login");
+        })
+        .catch(() => alert("Error signing out"));
     }
     return (
         <View style={styles.superContainer}>

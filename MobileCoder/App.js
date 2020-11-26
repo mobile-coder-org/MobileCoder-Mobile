@@ -46,31 +46,3 @@ export default function App(){
       </NavigationContainer>
   );
 };
-
-
-/*
-const AppStack = createStackNavigator({
-  Home : HomeScreen
-});
-
-const AuthStack = createStackNavigator({
-  Login: LoginScreen,
-  Signup: SignupScreen
-});
-*/
-
-/*
-export default createAppContainer(
-  createSwitchNavigator(
-    {
-      Splash: SplashScreen,
-      App: AppStack,
-      Auth: AuthStack
-    },
-    {
-      initialRouteName: 'Splash'
-    }
-  )
-);
-*/
-
