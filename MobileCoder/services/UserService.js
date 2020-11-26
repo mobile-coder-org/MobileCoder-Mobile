@@ -30,14 +30,14 @@ export default class UserService {
         })
     }
 
-    static getUser(uid, callback){
+    static getUser(uid, callback, nocontents){
         db.collection("users").doc(uid).get().then((doc) =>{
             if(doc.exists){
                 let data = doc.data();
                 UserService.getUserWorkspaces(uid, (workspaces) =>{
                     let user = new User(uid, data.name, data.email, workspaces);
                     callback(user);
-                } );
+                }, nocontents);
             }
             else {
                 console.log("user does not exist")
@@ -57,7 +57,7 @@ export default class UserService {
         .catch((err) => {alert("could not create workspace")});
     }
 
-    static getUserWorkspaces(uid, callback){
+    static getUserWorkspaces(uid, callback, nocontents){
         db.collection("users").doc(uid).collection("workspaces").get().then((querySnapshot) =>{
                console.log("IN");
                let workspaces = [];
@@ -74,11 +74,12 @@ export default class UserService {
                         if(i === len){
                             callback(workspaces)
                         }
-                    })
+                    }, nocontents)
                }) 
         })
         .catch((err) => console.log("error getting workspaces"));
     }
+
 
     static deleteUserWorkspace(uid, wid, callback){
         UserService.getUserWorkspaceFiles(uid, wid, (files) =>{
@@ -148,6 +149,14 @@ export default class UserService {
             callback(files);
         })
         .catch((err) => {console.log("error getting files");});
+    }
+
+    static getUserWorkspaceFileContent(uid, wid, fid, callback){
+        db.collection("users").doc(uid).collection("workspaces").doc(wid).collection("files").doc(fid).get().then((doc) =>{
+            let data = doc.data()
+            callback(data.contents);
+        })
+        .catch(() => callback(undefined))
     }
 
     static deleteUserWorkspaceFile(uid, wid, fid, callback){
