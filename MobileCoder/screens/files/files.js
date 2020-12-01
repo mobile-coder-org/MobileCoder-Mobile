@@ -30,6 +30,9 @@ export default function FilesScreen(props){
   const [workspaces, setWorkspaces] = useState(user.workspaces);
   const [workspaceModalVisible, setWorkspaceModalVisible] = useState(false);
   const [fileModalVisible, setFileModalVisible] = useState(false);
+  const [refreshingWorkspaces,setRefreshingWorkspaces]=useState(false);
+  const [refreshingFiles,setRefreshingFiles]=useState(false);
+
 
   function addWorkspacePressed(){
     setWorkspaceModalVisible(true);
@@ -262,6 +265,16 @@ export default function FilesScreen(props){
             keyExtractor={(item, index) => item.name + index}
             extraData={selectedInd}
             ListFooterComponent={workspacePlusIcon}
+     		refreshing={refreshingFiles}
+      		onRefresh={()=>{
+      		setRefreshingWorkspaces(true);
+      		setRefreshingFiles(false);
+      		UserService.getUserWorkspaces(user.uid, (workspaces) =>{
+    			setRefreshingWorkspaces(false);
+      			setWorkspaces(workspaces);	
+	  			});
+	  		}
+        }
         />
         </View>
       {/*pass selectedID to data to get just the selected data's files*/}
@@ -275,6 +288,18 @@ export default function FilesScreen(props){
       data={workspaces.length > 0 ? workspaces[selectedInd].files: []}
       keyExtractor={(item, index) => `file-${index}`}
       renderItem={({ item, index}) => <FileComponent name={item.name + item.extension} index={index}/>}
+      refreshing={refreshingFiles}
+      onRefresh={()=>{
+      	setRefreshingFiles(true);
+      	setRefreshingWorkspaces(false);
+      	UserService.getUserWorkspaceFiles(user.uid, workspaces[selectedInd].wid, (files) =>{
+    			setRefreshingFiles(false);
+    			let copyWorkspaces = workspaces.slice();//makes a copy of the workspaces
+      			copyWorkspaces[selectedInd].files = files;
+      			setWorkspaces(copyWorkspaces);
+	  });
+      	
+      }/*view documentation*/}
     />
     </View>
     </View>
