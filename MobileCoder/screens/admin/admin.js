@@ -97,11 +97,15 @@ const styles = StyleSheet.create({
         marginTop: 50,
         height: 60,
         backgroundColor: "rgba(36, 36, 36, 0.42)",
-        padding: 10 
+        padding: 10,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     logoutText: {
         textAlign: 'center',
-        fontSize: 30,
+        fontSize: 20,
         color: "#D85D5D"
     }
 })

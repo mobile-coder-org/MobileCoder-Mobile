@@ -209,7 +209,8 @@ export default function FilesScreen(props){
     <Swipeout style={{backgroundColor: "rgba(0,0,0,0.0)"}}right={fileSwipeoutBtns}>
     <TouchableOpacity onPress={() => {
       //updateFile("console.log('Hello World')", index)
-      navigation.navigate('TempTextEditing', {user: user, file: workspaces[selectedInd].files[index]})
+      let wid = workspaces[selectedInd].wid
+      navigation.navigate('TempTextEditing', {user: user, wid: wid, file: workspaces[selectedInd].files[index]})
       }}>
     <View style={styles.file}>
       <Text style={styles.titlePurple}>{name}</Text>

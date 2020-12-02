@@ -41,6 +41,7 @@ export default class UserService {
             }
             else {
                 console.log("user does not exist")
+                callback(undefined)
             }
         })
     }
