@@ -1,5 +1,5 @@
-import { WebView } from 'react-native-webview';
 import React, {Component, useState} from 'react';
+import HighlightrView from 'react-native-highlightr'
 import {
   SafeAreaView,
   StyleSheet,
@@ -27,12 +27,7 @@ export default function TempTextEditingScreen(props){
                     marginLeft: "auto", marginRight: "auto"}}>{file.name + file.extension}
                     </Text>
                 </View>
-                <WebView 
-                    source={editor}
-                    scalesPageToFit={false}
-                    javaScriptEnabled={true}
-                    style={{flex:1}}
-                />
+                    <HighlightrView style ={{flex: 1, backgroundColor: "#000000"}}/>
             </SafeAreaView>
         </View>
     )
