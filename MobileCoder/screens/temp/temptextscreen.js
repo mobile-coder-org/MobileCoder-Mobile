@@ -1,19 +1,26 @@
 import React, {Component, useState} from 'react';
 import HighlightrView from 'react-native-highlightr'
 import {
+  Button,
   SafeAreaView,
   StyleSheet,
-  ScrollView,
   View,
   TouchableOpacity,
   Text,
-  StatusBar,
 } from 'react-native';
+
+import firebase from "../../environment/config";
+
+import "firebase/auth";
+import "firebase/firestore";
 
 export default function TempTextEditingScreen(props){
     let {file} = props.route.params
     let goBack = () => props.navigation.goBack();
-    const editor = require("./textEditor.html");
+    let languages = {'.js': 'Javascript', '.swift': 'Swift', '.java': 'Java'}
+    let fileLang = languages[file.extension]
+    let db = firebase.firestore()
+    let fileRef = db.collection("users").doc(props.route.params.user.uid).collection("workspaces").doc(props.route.params.workspace).collection("files").doc(file.fid);
 
     return(
         <View style={styles.container}>
@@ -26,8 +33,17 @@ export default function TempTextEditingScreen(props){
                     <Text style={{color: "#f0f0f0", fontSize: 30,
                     marginLeft: "auto", marginRight: "auto"}}>{file.name + file.extension}
                     </Text>
+                    <Button title="Save" 
+                        onPress={() => fileRef.update({
+                            contents: file.contents
+                        })}
+                    />
                 </View>
-                    <HighlightrView style ={{flex: 1, backgroundColor: "#000000"}}/>
+                    <HighlightrView 
+                        style={{flex: 1, backgroundColor: "#000000"}}
+                        value={file.contents}
+                        language={fileLang}
+                        />
             </SafeAreaView>
         </View>
     )
