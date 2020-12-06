@@ -39,7 +39,9 @@ export default function FilesScreen(props){
   }
 
   function addFilePressed(){
-    setFileModalVisible(true);
+    if(workspaces.length > 0){
+      setFileModalVisible(true);
+    }
   }
 
   function createWorkspace(name){

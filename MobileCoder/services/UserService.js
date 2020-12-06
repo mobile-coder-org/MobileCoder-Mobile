@@ -41,7 +41,6 @@ export default class UserService {
             }
             else {
                 console.log("user does not exist")
-                callback(undefined)
             }
         })
     }
@@ -64,6 +63,10 @@ export default class UserService {
                let workspaces = [];
                let i = 0;
                let len = querySnapshot.size;
+               if (len === 0){
+                   callback([])
+                   return;
+               }
                querySnapshot.forEach(function(doc){
                     let data = doc.data();
                     console.log("got data");
