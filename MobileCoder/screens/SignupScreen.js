@@ -45,8 +45,7 @@ export default class SignupScreen extends React.Component {
             <KeyboardAwareScrollView
                 resetScrollToCoords={{ x: 0, y: 0 }}
                 contentContainerStyle={styles.container}
-                scrollEnabled={false}
-            >
+                scrollEnabled={false}>
                 <View style={styles.container}>
                     <Text style={styles.text}>Create an account</Text>
                     <View style={styles.error}>
@@ -89,7 +88,6 @@ export default class SignupScreen extends React.Component {
                                 ></TextInput>
                             </View>
                         </View>
-                        
                     </View>
 
                     <TouchableOpacity style={styles.button} onPress={this.handleSignup}>
@@ -98,8 +96,7 @@ export default class SignupScreen extends React.Component {
 
                     <TouchableOpacity 
                         style={{alignSelf:'center', marginTop: 32}}
-                        onPress={() => this.props.navigation.navigate("Login")}
-                    >
+                        onPress={() => this.props.navigation.navigate("Login")}>
                         <Text style={{color: '#fff', fontSize: 13}}>Already have an account? <Text>Log in</Text></Text>
                     </TouchableOpacity>
                 </View>
@@ -111,7 +108,7 @@ export default class SignupScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#36393e',
-        flex: 1,
+        flex: 1
     },
     text: {
         alignSelf: 'center',
