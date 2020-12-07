@@ -1,5 +1,5 @@
 import React from 'react';
-import {useState } from "react";
+import {useState, useEffect } from "react";
 import { Modal, FlatList, 
   SafeAreaView, StatusBar, StyleSheet, 
   Text, TouchableOpacity, SectionList, 
@@ -33,6 +33,18 @@ export default function FilesScreen(props){
   const [refreshingWorkspaces,setRefreshingWorkspaces]=useState(false);
   const [refreshingFiles,setRefreshingFiles]=useState(false);
 
+  let refresh = () => {
+    if(workspaces.length <= 0){
+      return;
+    }
+    UserService.getUserWorkspaceFiles(user.uid, workspaces[selectedInd].wid, (files) => {
+      //refresh files
+      let copyWorkspaces = workspaces.slice();
+      let copyFiles = files;
+      copyWorkspaces[selectedInd].files = copyFiles
+      setWorkspaces(copyWorkspaces)
+    })
+  }
 
   function addWorkspacePressed(){
     setWorkspaceModalVisible(true);
@@ -212,7 +224,7 @@ export default function FilesScreen(props){
     <TouchableOpacity onPress={() => {
       //updateFile("console.log('Hello World')", index)
       let wid = workspaces[selectedInd].wid
-      navigation.navigate('TempTextEditing', {user: user, wid: wid, file: workspaces[selectedInd].files[index]})
+      navigation.navigate('TempTextEditing', {user: user, wid: wid, file: workspaces[selectedInd].files[index], onGoBack: refresh})
       }}>
     <View style={styles.file}>
       <Text style={styles.titlePurple}>{name}</Text>
@@ -298,8 +310,8 @@ export default function FilesScreen(props){
       	UserService.getUserWorkspaceFiles(user.uid, workspaces[selectedInd].wid, (files) =>{
     			setRefreshingFiles(false);
     			let copyWorkspaces = workspaces.slice();//makes a copy of the workspaces
-      			copyWorkspaces[selectedInd].files = files;
-      			setWorkspaces(copyWorkspaces);
+      		copyWorkspaces[selectedInd].files = files;
+      		setWorkspaces(copyWorkspaces);
 	  });
       	
       }/*view documentation*/}

@@ -24,6 +24,7 @@ const CreateWorkspaceModal = ({visible, setModalVisible, createWorkspace}) => {
     behavior="position"
     style={styles.modalView}
   >
+    <SafeAreaView style={{height: "100%", width: "100%"}}>
     <View style={{alignItems: 'center', height: '100%', width: '100%', backgroundColor:"#363941" }}>
 
     <View style={styles.modalHeader}>
@@ -72,6 +73,7 @@ const CreateWorkspaceModal = ({visible, setModalVisible, createWorkspace}) => {
         </TouchableOpacity>
       </View>
     </View>
+    </SafeAreaView>
   </KeyboardAvoidingView>
   </Modal>
 )};

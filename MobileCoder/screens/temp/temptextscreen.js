@@ -19,9 +19,12 @@ import "firebase/firestore";
 import UserService from '../../services/UserService';
 
 export default function TempTextEditingScreen(props){
-    let {file, user, wid} = props.route.params
+    let {file, user, wid, onGoBack} = props.route.params
     let [highlightrText, setHighlightrText] = useState(file.contents);
-    let goBack = () => props.navigation.goBack();
+    let goBack = () => {
+        onGoBack(); 
+        props.navigation.goBack();
+    };
 
     let languages = {'.js': 'Javascript', '.swift': 'Swift', '.java': 'Java', '.md': 'Markdown'}
     let fileLang = languages[file.extension] ? languages[file.extension] : "Markdown"
@@ -82,12 +85,12 @@ export default function TempTextEditingScreen(props){
                         <Text style={{color: "#7041ff", fontSize: 20}}>{"< Back"}</Text>
                     </TouchableOpacity>
                     */}
-                    <Button title="< Back" onPress={goBack}/>
+                    <Button title="< Back" onPress={goBack} color="#9B51E0"/>
                     <Text style={{color: "#f0f0f0", fontSize: 25,
                     alignSelf: 'center', marginLeft: "auto", marginRight: "auto"}}>
                         {file.name + file.extension}
                     </Text>
-                    <Button title="Save" onPress={saveFile}/>
+                    <Button title="Save" onPress={saveFile} color="#9B51E0"/>
                 </View>
                 <KeyboardAvoidingView
                     behavior="padding"

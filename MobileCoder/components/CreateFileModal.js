@@ -25,6 +25,7 @@ const CreateFileModal = ({visible, setModalVisible, createFile}) => {
     behavior="position"
     style={styles.modalView}
   >
+    <SafeAreaView style={{height: "100%", width: "100%"}}>
     <View style={{alignItems: 'center', height: '100%', width: '100%', backgroundColor:"#363941" }}>
 
     <View style={styles.modalHeader}>
@@ -91,6 +92,7 @@ const CreateFileModal = ({visible, setModalVisible, createFile}) => {
         </TouchableOpacity>
       </View>
     </View>
+</SafeAreaView>
   </KeyboardAvoidingView>
   </Modal>
 )};
