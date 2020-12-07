@@ -53,12 +53,13 @@ const CreateWorkspaceModal = ({visible, setModalVisible, createWorkspace}) => {
           }}
       />
       <TouchableOpacity onPress={() => {
-        if(workspaceName !== ""){
+        if(workspaceName !== "" && workspaceName.length <= 50){
           createWorkspace(workspaceName);
           setModalVisible(false);
-        }
-        else{
+        } else if (workspaceName == ""){
           alert("Your workspace needs a name")
+        } else {
+          alert("Workspace name has 50 character limit")
         }
         }}>
         <View style={{

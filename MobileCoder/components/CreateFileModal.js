@@ -72,12 +72,16 @@ const CreateFileModal = ({visible, setModalVisible, createFile}) => {
       />
 
       <TouchableOpacity onPress={() => {
-        if(fileName !== "" && fileExtension !== ""){
+        let languages = [".js", ".java", ".py", ".md"];
+        if(fileName !== "" && fileExtension !== "" && (/^[a-zA-Z_0-9]+$/.test(fileName)) && (languages.indexOf(fileExtension) != -1) && fileName.length <= 50){
           createFile(fileName, fileExtension);
           setModalVisible(false);
-        }
-        else{
+        } else if (fileName == "" || fileExtension == ""){
           alert("Your file needs a name and extension")
+        } else if (languages.indexOf(fileExtension) < 0){
+          alert("Invalid file extension")
+        } else {
+          alert("File name has 50 character limit")
         }
         }}>
         <View style={{
