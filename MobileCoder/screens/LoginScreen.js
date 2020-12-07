@@ -4,6 +4,7 @@ import {View, StyleSheet, Text, TextInput, TouchableOpacity} from 'react-native'
 import firebase from '../environment/config'
 import { User } from '../models/models'
 import UserService from '../services/UserService'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 export default class LoginScreen extends React.Component {
     state = {
@@ -28,6 +29,7 @@ export default class LoginScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
+                <KeyboardAwareScrollView>
                 <Text style={styles.text}>Welcome back!</Text>
 
                 <View style={styles.error}>
@@ -71,6 +73,7 @@ export default class LoginScreen extends React.Component {
                 >
                     <Text style={{color: '#fff', fontSize: 13}}>New to Mobile Coder? <Text>Sign up</Text></Text>
                 </TouchableOpacity>
+                </KeyboardAwareScrollView>
             </View>
         );
     }   
@@ -112,7 +115,7 @@ const styles = StyleSheet.create({
     },
     button: {
         alignItems: 'center',
-        backgroundColor: '#7041ff',
+        backgroundColor:"#9B51E0",
         height: 50,
         justifyContent: 'center',
         borderRadius: 8,

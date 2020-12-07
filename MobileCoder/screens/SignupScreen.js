@@ -4,6 +4,7 @@ import {View, StyleSheet, Text, TextInput, TouchableOpacity, Alert} from 'react-
 import firebase from '../environment/config'
 import UserService from '../services/UserService'
 import { User } from '../models/models'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 export default class SignupScreen extends React.Component {
     state = {
@@ -42,6 +43,7 @@ export default class SignupScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
+                <KeyboardAwareScrollView>
                 <Text style={styles.text}>Create an account</Text>
 
                 <View style={styles.error}>
@@ -93,8 +95,9 @@ export default class SignupScreen extends React.Component {
                     style={{alignSelf:'center', marginTop: 32}}
                     onPress={() => this.props.navigation.navigate("Login")}
                 >
-                    <Text style={{color: '#fff', fontSize: 13}}>Already have an account? <Text>Log in</Text></Text>
+                    <Text style={{color: '#fff', fontSize: 13}}>Already have an account? <Text>Sign in</Text></Text>
                 </TouchableOpacity>
+                </KeyboardAwareScrollView>
             </View>
         );
     }   
@@ -136,7 +139,7 @@ const styles = StyleSheet.create({
     },
     button: {
         alignItems: 'center',
-        backgroundColor: '#7041ff',
+        backgroundColor:"#9B51E0",
         height: 50,
         justifyContent: 'center',
         borderRadius: 8,
