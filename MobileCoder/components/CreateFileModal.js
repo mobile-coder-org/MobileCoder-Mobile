@@ -73,12 +73,15 @@ const CreateFileModal = ({visible, setModalVisible, createFile}) => {
       />
 
       <TouchableOpacity onPress={() => {
-        if(fileName !== "" && fileExtension !== ""){
+        if(fileName != "" && fileExtension.length>= 2 && (/^[a-zA-Z_0-9\-\.]+$/.test(fileName)) && fileName.length <= 255 && fileExtension.charAt(0)=='.' && (/^[a-zA-Z_0-9]+$/.test(fileExtension.substring(1)))){
           createFile(fileName, fileExtension);
           setModalVisible(false);
-        }
-        else{
+        } else if (fileName == "" || fileExtension == ""){
           alert("Your file needs a name and extension")
+        } else if (fileExtension.charAt(0)!='.' || !(/^[a-zA-Z_0-9\-\.]+$/.test(fileExtension.substring(1))) || fileExtension.substring(1).includes(".") || fileExtension.length<2){
+          alert("Invalid file extension")
+        } else {
+          alert("Invalid file name")
         }
         }}>
         <View style={{
