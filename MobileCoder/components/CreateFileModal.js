@@ -73,7 +73,7 @@ const CreateFileModal = ({visible, setModalVisible, createFile}) => {
       />
 
       <TouchableOpacity onPress={() => {
-        if(fileName !== "" && fileExtension.length>= 2 && (/^[a-zA-Z_0-9\-\.]+$/.test(fileName)) && fileName.length <= 255 && fileExtension.charAt(0)=='.' && (/^[a-zA-Z_0-9]+$/.test(fileExtension.substring(1)))){
+        if(fileName != "" && fileExtension.length>= 2 && (/^[a-zA-Z_0-9\-\.]+$/.test(fileName)) && fileName.length <= 255 && fileExtension.charAt(0)=='.' && (/^[a-zA-Z_0-9]+$/.test(fileExtension.substring(1)))){
           createFile(fileName, fileExtension);
           setModalVisible(false);
         } else if (fileName == "" || fileExtension == ""){
