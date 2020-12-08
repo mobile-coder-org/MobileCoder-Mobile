@@ -17,6 +17,7 @@ import firebase from "../../environment/config";
 import "firebase/auth";
 import "firebase/firestore";
 import UserService from '../../services/UserService';
+import HighlightrService from '../../services/HighlightrService'
 
 export default function TempTextEditingScreen(props){
     let {file, user, wid, onGoBack} = props.route.params
@@ -26,11 +27,12 @@ export default function TempTextEditingScreen(props){
         props.navigation.goBack();
     };
 
-    let languages = {'.js': 'Javascript', '.swift': 'Swift', '.java': 'Java', '.md': 'Markdown'}
-    let fileLang = languages[file.extension] ? languages[file.extension] : "Markdown"
-    let [language, setLanguage] = useState(fileLang)
+    let languages = HighlightrService.languages;
+    let ext = file.extension.toLowerCase();
+    let fileLang = languages[ext] ? languages[ext] : "Markdown";
+    let [language, setLanguage] = useState(fileLang);
 
-    let db = firebase.firestore()
+    let db = firebase.firestore();
     let keyboardHeight = new Animated.Value(0);
     let [keyboardOffset, setKeyboardOffset] = useState(0);
     //let fileRef = db.collection("users").doc(props.route.params.user.uid).collection("workspaces").doc(props.route.params.workspace).collection("files").doc(file.fid);
